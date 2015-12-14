@@ -5,6 +5,8 @@
 
 struct hline {
 
+    hline(): m_pt(0,0,0), m_dir(0,0,1) {}
+
     hline(double X,double Y, double Z): m_pt(X,Y,Z), m_dir(0,0,1) {}
     hline(double X,double Y, double Z, double U, double V, double W): m_pt(X,Y,Z),m_dir(U,V,W){
         m_dir /= m_dir.norm();
