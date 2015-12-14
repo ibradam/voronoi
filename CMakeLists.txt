@@ -64,6 +64,12 @@ if(APPLE)
    set(CMAKE_MACOSX_RPATH 1)
 endif (APPLE)
 
+option (MDEBUG "enable mdebug message" OFF)
+
+if(MDEBUG)
+   add_definitions ("-DMDEBUG_COUT")
+endif()
+
 enable_testing()
 
 if (EXISTS ${PROJECT_SOURCE_DIR}/cmake/voronoi-config.h.in)

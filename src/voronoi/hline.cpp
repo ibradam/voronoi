@@ -1,4 +1,5 @@
 #include <math.h>
+#include <voronoi/mdebug.h>
 #include <voronoi/hline.h>
 
 /*!
@@ -16,5 +17,6 @@ double hline::distance2(const mmx::point<double>& p) const {
 }
 
 double hline::distance2(double X, double Y, double Z) const {
+    mdebug()<<"constructor"<<X<<Y<<Z;
     return this->distance2( mmx::point<double>(X,Y,Z) );
 }
