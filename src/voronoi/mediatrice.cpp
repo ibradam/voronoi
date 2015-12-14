@@ -74,7 +74,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2,
  * \param H3
  * \param A
  * \param B
- * \param info: output variable (0 OK, 1 outside face, 2 segment in face)
+ * \param info: output variable  (0 OK, 1 outside face, 2 segment in face)
  * \return the point on the trisectrice of H1, H2 and H3 and on the face [A,B]
  */
 mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
