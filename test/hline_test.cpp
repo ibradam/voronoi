@@ -39,8 +39,6 @@ int main()
     std:: cout << L2.distance2(q2)<< std::endl;
     std:: cout << L3.distance2(q2)<< std::endl;
 
-
-
     mmx::point<double> q=equidist(L1,L2,L3,L4,info);
     std::cout<<"point-equidistant "<< q <<std::endl;
     std:: cout << L1.distance2(q)<< std::endl;

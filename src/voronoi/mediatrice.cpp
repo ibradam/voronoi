@@ -188,7 +188,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
             if (min(ya,yb)<=d3*z0*z0+e3*z0+f3 && d3*z0*z0+e3*z0+f3<=max(ya,yb) && z2<=z0 && z0<=z3)
                 return q;
         }
-        else if (a4=xa && z3<=max(za,zb) && min(ya,yb)<=b4 && b4<=max(ya,yb))
+        else if (a4==xa && z3<=max(za,zb) && min(ya,yb)<=b4 && b4<=max(ya,yb))
         {
             info = 2;
             std::cout<<"L'intersection de la trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "avec la face" "[ " << A << " " << B <<"]" "est le segment"  "[ " << z3 << " " << max(za,zb) <<"]"  << std::endl;
@@ -246,7 +246,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
             }
             else
             {
-                if (b4=ya && z3<=max(za,zb) && min(xa,xb)<=a4 && a4<=max(xa,xb))
+                if (b4==ya && z3<=max(za,zb) && min(xa,xb)<=a4 && a4<=max(xa,xb))
                 {
                     info = 2;
                     std::cout<<"L'intersection de la trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "avec la face" "[ " << A << " " << B <<"]" "est le segment"  "[ " << z3 << " " << max(za,zb) <<"]"  << std::endl;
@@ -567,7 +567,6 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
     double  a4=(0.5)* (x1 * x1 * y2 - x1 * x1 * y3 - x2 * x2 * y1 + x2 * x2 * y3 + x3 * x3 * y1 - x3 * x3 * y2 + y1 * y1 * y2 - y1 * y1 * y3 - y1 * y2 * y2 + y1 * y3 * y3 + y2 * y2 * y3 - y2 * y3 * y3) / (x1 * y2 - x1 * y3 - x2 * y1 + x2 * y3 + x3 * y1 - x3 * y2);
     double  b4=(-0.5)* (x1 * x1 * x2 - x1 * x1 * x3 - x1 * x2 * x2 + x1 * x3 * x3 - x1 * y2 * y2 + x1 * y3 * y3 + x2 * x2 * x3 - x2 * x3 * x3 + x2 * y1 * y1 - x2 * y3 * y3 - x3 * y1 * y1 + x3 * y2 * y2) / (x1 * y2 - x1 * y3 - x2 * y1 + x2 * y3 + x3 * y1 - x3 * y2);
     double  z0;
-    double t0= -(0.5)*((2 * b1 * x2 - 2 * b1 * x4 + 2 * d1 * y2 - 2 * d1 * y4 - x2 * x2 + x4 * x4 - y2 * y2 + y4 * y4 - z2 * z2 + z4 * z4) / (a1 * x2 - a1 * x4 + c1 * y2 - c1 * y4 + z2 - z4));
     A1=-2 * a2 * x2 + 2 * a2 * x4 - 2 * d2 * y2 + 2 * d2 * y4;
     B1=-2 * b2 * x2 + 2 * b2 * x4 - 2 * e2 * y2 + 2 * e2 * y4 - 2 * z2 + 2 * z4;
     C1=-2 * c2 * x2 + 2 * c2 * x4 - 2 * f2 * y2 + 2 * f2 * y4 + x2 * x2 - x4 * x4 + y2 * y2 - y4 * y4 + z2 * z2 - z4 * z4;
@@ -581,6 +580,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
     A3=-1; B3=2*z4;
     C3=-2 * a4 * x2 + 2 * a4 * x4 - 2 * b4 * y2 + 2 * b4 * y4 + x2 * x2 - x4 * x4 + y2 * y2 - y4 * y4 - z4 * z4;
     D3= B3*B3-4*A3*C3;
+    double  t0= -(0.5)*((2 * b1 * x2 - 2 * b1 * x4 + 2 * d1 * y2 - 2 * d1 * y4 - x2 * x2 + x4 * x4 - y2 * y2 + y4 * y4 - z2 * z2 + z4 * z4) / (a1 * x2 - a1 * x4 + c1 * y2 - c1 * y4 + z2 - z4));
     double  t21=(0.5)*(-B2 - sqrt(B2* B2 - 4 * B2 * C2))/A2;
     double  t22=(0.5)*(-B2 + sqrt(B2 * B2 - 4 * B2 * C2))/A2;
     double  t31= (0.5)*(-B3 - sqrt(B3* B3 - 4 * B3 * C3))/A3 ;
@@ -590,18 +590,17 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
     //#if (B1^2-4*B1*C1>=0) z1<t11, t12<z2 in T2 := [a2*t^2+b2*t+c2, d2*t^2+e2*t+f2, t];
     //#if (B2^2-4*A1*C1>=0) z2<t21, t22<z3 in T3 := [a3*t^2+b3*t+c3, d3*t^2+e3*t+f3, t];
     //#if (B3^2-4*A3*C3>=0) z3<t31 ,t32<z4  in T4 := [a4, b4, t];
-    using std::min;
-    using std::max;
+    //using std::min;
+    //using std::max;
 
 
     q=mmx::point<double>(a1*t0+b1, c1*t0+d1, t0);
     if (t0<= z1)
-    {
+
         return q;
-    }
-    else
-    {
-        if(D1>=0)
+
+        else if(D1>=0)
+
         {
             q=mmx::point<double>(a2*t11*t11+b2*t11+c2, d2*t11*t11+e2*t11+f2, t11);
             if (z1<=t11 && t11<=z2)
@@ -609,28 +608,32 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
             q=mmx::point<double>(a2*t12*t12+b2*t12+c2, d2*t12*t12+e2*t12+f2, t12);
             if (z1<=t12 && t12<=z2)
                 return q;
-        }
-        else       if(D2>=0)
-        {
-            q=mmx::point<double>(a3*t21*t21+b3*t21+c3, d3*t21*t21+e3*t21+f3, t21);
-            if (z2<=t21 && t21<=z3)
-                return q;
-            q=mmx::point<double>(a3*t22*t22+b3*t22+c3, d3*t22*t22+e3*t22+f3, t22);
-            if (z2<=t22 && t22<=z3)
-                return q;
-        }
-        else if(D3>=0)
-        {
-            q=mmx::point<double>(a4, b4, t31);
-            if (z3<=t31 && t31<=z4)
-                return q;
-            q=mmx::point<double>(a4, b4, t32);
-            if (z3<=t32 && t32<=z4)
-                return q;
+
+            else  if(D2>=0)
+            {
+                q=mmx::point<double>(a3*t21*t21+b3*t21+c3, d3*t21*t21+e3*t21+f3, t21);
+                if (z2<=t21 && t21<=z3)
+                    return q;
+                q=mmx::point<double>(a3*t22*t22+b3*t22+c3, d3*t22*t22+e3*t22+f3, t22);
+                if (z2<=t22 && t22<=z3)
+                    return q;
+
+                else if(D3>=0)
+                {
+                    q=mmx::point<double>(a4, b4, t31);
+                    if (z3<=t31 && t31<=z4)
+                        return q;
+                    q=mmx::point<double>(a4, b4, t32);
+                    if (z3<=t32 && t32<=z4)
+                        return q;
+                }
+            }
         }
     }
 
-}
+
+
+
 
 
 
