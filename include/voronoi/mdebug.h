@@ -57,7 +57,7 @@ struct mdebug {
         m_f.close();
 #endif
 #ifdef MDEBUG_COUT
-        if(m_level <= verbose)
+        //if(m_level <= verbose)
             std::cout<<std::endl;
 #endif
     }
@@ -75,7 +75,8 @@ struct mdebug {
         if(m_level<=verbose) m_f<<x<<" ";
 #endif
 #ifdef MDEBUG_COUT
-        if(m_level<=verbose) std::cout<<x<<" ";
+        //if(m_level<=verbose)
+            std::cout<<x<<" ";
 #endif
         return *this;
     }
@@ -85,17 +86,9 @@ struct mdebug {
 #endif
 #ifdef MDEBUG_COUT
     int m_level;
-    static int verbose;
+//    static int verbose;
 #endif
 };
-#ifdef MDEBUG_COUT
-int mdebug::verbose=0;
-#endif
 
-inline void mdebug_verbose(int l){
-#ifdef MDEBUG_COUT
-    mdebug::verbose=l;
-#endif
-}
 
 #endif // MDEBUG_HPP
