@@ -42,7 +42,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2,
         std::cout<<" "<<t1<<" "<<t2<<" "<<t3<< " "<<t4<<std::endl;
 
         p = t1*A+(1-t1)*B;
-        if (t1>=0 && t1 <= 1 && p[2]<a)
+        if (t1>=0 && t1 <= 1 && p[2]<=a)
             return p;
         else {
             p = t2*A+(1-t2)*B;
@@ -161,7 +161,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
         mdebug()<< "x constant"<<a4;
         z0=(xa - b1)/a1;
         q=mmx::point<double>(xa,c1*z0+d1,z0);
-        if (z0<z1 && min(ya,yb)<=c1*z0+d1 && c1*z0+d1<=max(ya,yb))
+        if (z0<=z1 && min(ya,yb)<= q[1] && q[1]<=max(ya,yb)  && min(za,zb)<=q[2] && q[2]<=max(za,zb))
             return q;
 
         if ((delta = (b2*b2 - (4.0)*a2*(c2 - xa)))>=0)
@@ -181,16 +181,16 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
             mdebug()<<"delta 1.2";
         }
 
-        if (0<=b3*b3 - (4.0)*a3*(c3 - xa))
+        if (  (delta=(b3*b3 - (4.0)*a3*(c3 - xa)))>=0)
         {
             mdebug()<<"delta 2";
-            z0=(0.5)*(-b3 - sqrt(b3*b3 - (4.0)*a3*(c3 - xa)))/a3;
-            q==mmx::point<double>(xa,d3*z0*z0+e3*z0+f3,z0);
+            z0=(0.5)*(-b3 - sqrt(delta))/a3;
+            q=mmx::point<double>(xa,d3*z0*z0+e3*z0+f3,z0);
             if (min(ya,yb)<=q[1] && q[1]<=max(ya,yb)
                     && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z2<=z0 && z0<=z3)
                 return q;
 
-            z0=(0.5)*(-b3+sqrt(b3*b3 - (4.0)*a3*(c3 - xa)))/a3;
+            z0=(0.5)*(-b3+sqrt(delta))/a3;
             q=mmx::point<double>(xa,d3*z0*z0+e3*z0+f3,z0);
             if (min(ya,yb)<=q[1] && q[1]<=max(ya,yb)
                      && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z2<=z0 && z0<=z3)
@@ -201,7 +201,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
         {
             mdebug()<<"delta 3";
             info = 2;
-            std::cout<<"L'intersection de la trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "avec la face" "[ " << A << " " << B <<"]" "est le segment"  "[ " << z3 << " " << max(za,zb) <<"]"  << std::endl;
+            std::cout<<"L'intersection de la trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "avec la face" "[ " << A << " " << B <<"]" "est le segment"  "[ " << max(z3,min(za,zb)) << " " << max(za,zb) <<"]"  << std::endl;
             return mmx::point<double>(0,0,0);
         }
 
@@ -222,35 +222,35 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
         if (z0<z1)
         {
             q=mmx::point<double>(a1*z0+b1,ya,z0);
-            if (min(xa,xb)<=a1*z0+b1 && a1*z0+b1<=max(xa,xb))
+            if (min(xa,xb)<=a1*z0+b1 && a1*z0+b1<=max(xa,xb) && min(za,zb)<=q[2] && q[2]<=max(za,zb))
                 return q;
         }
         else
         {
 
-            if (0<=e2*e2 - (4.0)*d2*(f2 - ya))
+            if ((delta=(e2*e2 - (4.0)*d2*(f2 - ya)))>=0)
             {
-                z0=0.5*(-e2 - sqrt(e2*e2 - (4.0)*d2*(f2 - ya)))/d2;
+                z0=0.5*(-e2 - sqrt(delta))/d2;
                 q=mmx::point<double>(a2*z0*z0+b2*z0+c2,ya,z0);
-                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && z1<=z0 && z0<=z2)
+                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && z1<=z0 && z0<=z2 && min(za,zb)<=q[2] && q[2]<=max(za,zb))
                     return q;
 
-                z0=0.5*(-e2+sqrt(e2*e2 - (4.0)*d2*(f2 - ya)))/d2;
+                z0=0.5*(-e2+sqrt(delta))/d2;
                 q=mmx::point<double>(a2*z0*z0+b2*z0+c2,ya,z0);
-                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && z1<=z0 && z0<=z2)
+                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && z1<=z0 && z0<=z2 && min(za,zb)<=q[2] && q[2]<=max(za,zb))
                     return  q;
             }
 
-            else   if (0<=e3*e3 - (4.0)*d3*(f3 - ya))
+            else   if ((delta=(e3*e3 - (4.0)*d3*(f3 - ya)))>=0)
             {
-                z0=0.5*(-e3 - sqrt(e3*e3 - (4.0)*d3*(f3 - ya)))/d3;
+                z0=0.5*(-e3 - sqrt(delta))/d3;
                 q=mmx::point<double>(a3*z0*z0+b3*z0+c3,ya,z0);
-                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && z2<=z0 && z0<=z3)
+                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z2<=z0 && z0<=z3)
                     return q;
 
-                z0=0.5*(-e3+sqrt(e3*e3 - (4.0)*d3*(f3 - ya)))/d3;
+                z0=0.5*(-e3+sqrt(delta))/d3;
                 q=mmx::point<double>(a3*z0*z0+b3*z0+c3,ya,z0);
-                if (min(xa,xb)<=a3*z0*z0+b3*z0+c3 && a3*z0*z0+b3*z0+c3<=max(xa,xb) && z2<=z0 && z0<=z3)
+                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z2<=z0 && z0<=z3)
                     return q;
             }
             else
@@ -258,7 +258,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
                 if (b4==ya && z3<=max(za,zb) && min(xa,xb)<=a4 && a4<=max(xa,xb))
                 {
                     info = 2;
-                    std::cout<<"L'intersection de la trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "avec la face" "[ " << A << " " << B <<"]" "est le segment"  "[ " << z3 << " " << max(za,zb) <<"]"  << std::endl;
+                    std::cout<<"L'intersection de la trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "avec la face" "[ " << A << " " << B <<"]" "est le segment"  "[ " << max(z3,min(za,zb)) << " " << max(za,zb) <<"]"  << std::endl;
                     return mmx::point<double>(0,0,0);
                 }
                 else
@@ -286,20 +286,20 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
     {
         z0=za;
         q=mmx::point<double>(a1*z0+b1,c1*z0+d1,z0);
-        if (z0<=z1 && min(xa,xb)<=a1*z0+b1 && a1*z0+b1<=max(xa,xb) && min(ya,yb)<=c1*z0+d1 && c1*z0+d1<=max(ya,yb))
+        if (z0<=z1 && min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && min(ya,yb)<=q[1] && q[1]<=max(ya,yb))
             return q;
 
         q=mmx::point<double>(a2*z0*z0+b2*z0+c2,d2*z0*z0+e2*z0+f2,z0);
-        if (z1<=z0 && z0<=z2 && min(xa,xb)<=a2*z0*z0+b2*z0+c2 && a2*z0*z0+b2*z0+c2<=max(xa,xb) && min(ya,yb)<=d2*z0*z0+e2*z0+f2 && d2*z0*z0+e2*z0+f2<=max(ya,yb))
+        if (z1<=z0 && z0<=z2 && min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && min(ya,yb)<=q[1] && q[1]<=max(ya,yb))
             return q;
 
 
         q=mmx::point<double>(a3*z0*z0+b3*z0+c3,d3*z0*z0+e3*z0+f3,z0);
-        if (z2<=z0 && z0<=z3 && min(xa,xb)<=a3*z0*z0+b3*z0+c3 && a3*z0*z0+b3*z0+c3<=max(xa,xb) && min(ya,yb)<=d3*z0*z0+e3*z0+f3 && d3*z0*z0+e3*z0+f3<=max(ya,yb))
+        if (z2<=z0 && z0<=z3 && min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && min(ya,yb)<=q[1] && q[1]<=max(ya,yb))
             return q;
 
         q=mmx::point<double>(a4,b4,z0);
-        if (z3<=z0 && min(xa,xb)<=a4 && a4<=max(xa,xb) && min(ya,yb)<=b4 && b4<=max(ya,yb))
+        if (z3<=z0 && min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && min(ya,yb)<=q[1] && q[1]<=max(ya,yb))
             return q;
 
         info = 1;
