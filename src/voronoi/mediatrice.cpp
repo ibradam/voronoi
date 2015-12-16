@@ -153,56 +153,65 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
     using std::min;
     using std::max;
     /*std::cout<<" "<<t1<<" "<<t2<<" "<<t3<< " "<<t4<<std::endl;*/
+    double delta;
 
     if (xa==xb)
 
     {
-        mdebug()<< "x constant";
+        mdebug()<< "x constant"<<a4;
         z0=(xa - b1)/a1;
         q=mmx::point<double>(xa,c1*z0+d1,z0);
         if (z0<z1 && min(ya,yb)<=c1*z0+d1 && c1*z0+d1<=max(ya,yb))
             return q;
 
-        else if (0<=b2*b2 - (4.0)*a2*(c2 - xa))
+        if ((delta = (b2*b2 - (4.0)*a2*(c2 - xa)))>=0)
         {
-            z0=(0.5)*(-b2 - sqrt(b2*b2 - (4.0)*a2*(c2 - xa)))/a2;
+            mdebug()<<"delta 1";
+            z0=(0.5)*(-b2 - sqrt(delta))/a2;
             q=mmx::point<double>(xa,d2*z0*z0+e2*z0+f2,z0);
-            if (min(ya,yb)<=d2*z0*z0+e2*z0+f2 && d2*z0*z0+e2*z0+f2<=max(ya,yb) && z1<=z0 and z0<=z2)
+            if (min(ya,yb)<=q[1] && q[1]<=max(ya,yb)
+                  && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z1<=z0 && z0<=z2)
                 return q;
-
-            z0=(0.5)*(-b2+sqrt(b2*b2 - (4.0)*a2*(c2 - xa)))/a2;
+            mdebug()<<"delta 1.1";
+            z0=(0.5)*(-b2+sqrt(delta))/a2;
             q=mmx::point<double>(xa,d2*z0*z0+e2*z0+f2,z0);
-            if (min(ya,yb)<=d2*z0*z0+e2*z0+f2 && d2*z0*z0+e2*z0+f2<=max(ya,yb) and z1<=z0 && z0<=z2)
+            if (min(ya,yb)<=q[1] && q[1]<=max(ya,yb)
+                    && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z1<=z0 && z0<=z2)
                 return q;
+            mdebug()<<"delta 1.2";
         }
 
-        else  if (0<=b3*b3 - (4.0)*a3*(c3 - xa))
+        if (0<=b3*b3 - (4.0)*a3*(c3 - xa))
         {
+            mdebug()<<"delta 2";
             z0=(0.5)*(-b3 - sqrt(b3*b3 - (4.0)*a3*(c3 - xa)))/a3;
             q==mmx::point<double>(xa,d3*z0*z0+e3*z0+f3,z0);
-            if (min(ya,yb)<=d3*z0*z0+e3*z0+f3 && d3*z0*z0+e3*z0+f3<=max(ya,yb) && z2<=z0 && z0<=z3)
+            if (min(ya,yb)<=q[1] && q[1]<=max(ya,yb)
+                    && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z2<=z0 && z0<=z3)
                 return q;
 
             z0=(0.5)*(-b3+sqrt(b3*b3 - (4.0)*a3*(c3 - xa)))/a3;
             q=mmx::point<double>(xa,d3*z0*z0+e3*z0+f3,z0);
-            if (min(ya,yb)<=d3*z0*z0+e3*z0+f3 && d3*z0*z0+e3*z0+f3<=max(ya,yb) && z2<=z0 && z0<=z3)
+            if (min(ya,yb)<=q[1] && q[1]<=max(ya,yb)
+                     && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z2<=z0 && z0<=z3)
                 return q;
         }
-        else if (a4==xa && z3<=max(za,zb) && min(ya,yb)<=b4 && b4<=max(ya,yb))
+
+        if (a4==xa && z3<=max(za,zb) && min(ya,yb)<=b4 && b4<=max(ya,yb))
         {
+            mdebug()<<"delta 3";
             info = 2;
             std::cout<<"L'intersection de la trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "avec la face" "[ " << A << " " << B <<"]" "est le segment"  "[ " << z3 << " " << max(za,zb) <<"]"  << std::endl;
             return mmx::point<double>(0,0,0);
         }
 
-        else
-        {
 
-            info = 1;
-            std::cout<<"La trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "ne coupe pas la face" "[ " << A << " " << B <<"]" << std::endl;
-            return mmx::point<double>(0,0,0);
 
-        }
+        info = 1;
+        std::cout<<"La trissectrice de " << H1 << ", " << H2 << "et"  << H3 << "ne coupe pas la face" "[ " << A << " " << B <<"]" << std::endl;
+        return mmx::point<double>(0,0,0);
+
+
     }
 
 
@@ -223,12 +232,12 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
             {
                 z0=0.5*(-e2 - sqrt(e2*e2 - (4.0)*d2*(f2 - ya)))/d2;
                 q=mmx::point<double>(a2*z0*z0+b2*z0+c2,ya,z0);
-                if (min(xa,xb)<=a2*z0*z0+b2*z0+c2 && a2*z0*z0+b2*z0+c2<=max(xa,xb) && z1<=z0 && z0<=z2)
+                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && z1<=z0 && z0<=z2)
                     return q;
 
                 z0=0.5*(-e2+sqrt(e2*e2 - (4.0)*d2*(f2 - ya)))/d2;
                 q=mmx::point<double>(a2*z0*z0+b2*z0+c2,ya,z0);
-                if (min(xa,xb)<=a2*z0*z0+b2*z0+c2 && a2*z0*z0+b2*z0+c2<=max(xa,xb) && z1<=z0 && z0<=z2)
+                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && z1<=z0 && z0<=z2)
                     return  q;
             }
 
@@ -236,7 +245,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
             {
                 z0=0.5*(-e3 - sqrt(e3*e3 - (4.0)*d3*(f3 - ya)))/d3;
                 q=mmx::point<double>(a3*z0*z0+b3*z0+c3,ya,z0);
-                if (min(xa,xb)<=a3*z0*z0+b3*z0+c3 && a3*z0*z0+b3*z0+c3<=max(xa,xb) && z2<=z0 && z0<=z3)
+                if (min(xa,xb)<=q[0] && q[0]<=max(xa,xb) && z2<=z0 && z0<=z3)
                     return q;
 
                 z0=0.5*(-e3+sqrt(e3*e3 - (4.0)*d3*(f3 - ya)))/d3;
@@ -590,11 +599,13 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
 
     t0= -(0.5)*((2 * b1 * x2 - 2 * b1 * x4 + 2 * d1 * y2 - 2 * d1 * y4 - x2 * x2 + x4 * x4 - y2 * y2 + y4 * y4 - z2 * z2 + z4 * z4) / (a1 * x2 - a1 * x4 + c1 * y2 - c1 * y4 + z2 - z4));
     q=mmx::point<double>(a1*t0+b1, c1*t0+d1, t0);
-    if (t0<= z1)
+    if (t0<= z1) {
 
         return q;
+    }
 
-    else if(D1>=0)
+
+    if(D1>=0)
 
     {
         t11=(0.5)*(-B1 - sqrt(D1))/A1;
@@ -606,7 +617,8 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
         if (z1<=t12 && t12<=z2)
             return q;
     }
-    else  if(D2>=0)
+
+    if(D2>=0)
     {
         t21=(0.5)*(-B2 - sqrt(D2))/A2;
         t22=(0.5)*(-B2 + sqrt(D2))/A2;
@@ -617,7 +629,8 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
         if (z2<=t22 && t22<=z3)
             return q;
     }
-    else if(D3>=0)
+
+    if(D3>=0)
     {   t31= (0.5)*(-B3 - sqrt(D3))/A3 ;
         t32= (0.5)*(- B3 + sqrt(D3))/A3;
         q=mmx::point<double>(a4, b4, t31);
@@ -627,6 +640,8 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
         if (z3<=t32 && t32<=z4)
             return q;
     }
+
+
 }
 
 

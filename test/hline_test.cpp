@@ -5,11 +5,11 @@
 
 int main()
 {
-    hline L1(-2,3,-5);
+    hline L1(1,2,-3);
     print (L1);
-    hline L2(4,-4,-3);
+    hline L2(1,-2,1);
     print (L2);
-    hline L3(0,0,0);
+    hline L3(-1,2,-1);
     print (L3);
     hline L4(3,4,3);
     print (L4);
@@ -21,11 +21,18 @@ int main()
     std::cout<<A<<" "<<B<<std::endl;
     std::cout<<"point-equidistant "<< equidist(L1,L2,A,B) <<std::endl;
 
-    mmx::point< double> C(0,-1,-4), D(0,1,4);
+    mmx::point< double> C(0,-2.5,2), D(0,2.5,4);
     std::cout<<C<<" "<<D<<std::endl;
     int info;
-    std::cout<<"point-equidistant "<< equidist(L1,L2,L3,C,D,info) <<std::endl;
+    //std::cout<<"point-equidistant "<< equidist(L1,L2,L3,C,D,info) <<std::endl;
     // std::cout<<"point-equidistant "<< equidist(L1,L2,L3,L4,info) <<std::endl;
+    mmx::point<double> q0=equidist(L1,L2,L3,C,D,info);
+    std::cout<<"point-equidistant "<< q0 <<std::endl;
+    std:: cout << L1.distance2(q0)<< std::endl;
+    std:: cout << L2.distance2(q0)<< std::endl;
+    std:: cout << L3.distance2(q0)<< std::endl;
+
+    return 0;
 
     mmx::point<double> q1=equidist(L1,L2,A,B);
     std::cout<<"point-equidistant "<< q1 <<std::endl;
