@@ -5,13 +5,13 @@
 
 int main()
 {
-    hline L1(1,2,-3);
+    hline L1(-2,3,-5);
     print (L1);
-    hline L2(-1,2,-1);
+    hline L2(4,-4,-3);
     print (L2);
-    hline L3(1,-2,1);
+    hline L3(0,0,0);
     print (L3);
-    hline L4(3,-1,3);
+    hline L4(3,4,3);
     print (L4);
     std::cout<<"distance "<< L2.distance2(4,-4,4)<<std::endl;
     mmx::point<double> p(2,2,5);
