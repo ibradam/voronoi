@@ -27,7 +27,8 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2,
     double tt21 = (-x1 * xa + x1 * xb + x2 * xa - x2 * xb - y1 * ya + y1 * yb + y2 * ya - y2 * yb + z1 * za - z1 * zb - za * zb + zb * zb + sqrt(x1 * x1 * xa * xa - 2 * x1 * x1 * xa * xb + x1 * x1 * xb * xb + x1 * x1 * za * za - 2 * x1 * x1 * za * zb + x1 * x1 * zb * zb - 2 * x1 * x2 * xa * xa + 4 * x1 * x2 * xa * xb - 2 * x1 * x2 * xb * xb + 2 * x1 * xa * y1 * ya - 2 * x1 * xa * y1 * yb - 2 * x1 * xa * y2 * ya + 2 * x1 * xa * y2 * yb - 2 * x1 * xa * z1 * za + 2 * x1 * xa * z1 * zb + 2 * x1 * xa * za * zb - 2 * x1 * xa * zb * zb - 2 * x1 * xb * y1 * ya + 2 * x1 * xb * y1 * yb + 2 * x1 * xb * y2 * ya - 2 * x1 * xb * y2 * yb + 2 * x1 * xb * z1 * za - 2 * x1 * xb * z1 * zb - 2 * x1 * xb * za * za + 2 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2 * x2 * x2 * xa * xb + x2 * x2 * xb * xb - x2 * x2 * za * za + 2 * x2 * x2 * za * zb - x2 * x2 * zb * zb - 2 * x2 * xa * y1 * ya + 2 * x2 * xa * y1 * yb + 2 * x2 * xa * y2 * ya - 2 * x2 * xa * y2 * yb + 2 * x2 * xa * z1 * za - 2 * x2 * xa * z1 * zb - 2 * x2 * xa * za * zb + 2 * x2 * xa * zb * zb + 2 * x2 * xb * y1 * ya - 2 * x2 * xb * y1 * yb - 2 * x2 * xb * y2 * ya + 2 * x2 * xb * y2 * yb - 2 * x2 * xb * z1 * za + 2 * x2 * xb * z1 * zb + 2 * x2 * xb * za * za - 2 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2 * y1 * y1 * ya * yb + y1 * y1 * yb * yb + y1 * y1 * za * za - 2 * y1 * y1 * za * zb + y1 * y1 * zb * zb - 2 * y1 * y2 * ya * ya + 4 * y1 * y2 * ya * yb - 2 * y1 * y2 * yb * yb - 2 * y1 * ya * z1 * za + 2 * y1 * ya * z1 * zb + 2 * y1 * ya * za * zb - 2 * y1 * ya * zb * zb + 2 * y1 * yb * z1 * za - 2 * y1 * yb * z1 * zb - 2 * y1 * yb * za * za + 2 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2 * y2 * y2 * ya * yb + y2 * y2 * yb * yb - y2 * y2 * za * za + 2 * y2 * y2 * za * zb - y2 * y2 * zb * zb + 2 * y2 * ya * z1 * za - 2 * y2 * ya * z1 * zb - 2 * y2 * ya * za * zb + 2 * y2 * ya * zb * zb - 2 * y2 * yb * z1 * za + 2 * y2 * yb * z1 * zb + 2 * y2 * yb * za * za - 2 * y2 * yb * za * zb))/(za*za - 2*za*zb + zb*zb);
     double tt22 = -(x1 * xa - x1 * xb - x2 * xa + x2 * xb + y1 * ya - y1 * yb - y2 * ya + y2 * yb - z1 * za + z1 * zb + za * zb - zb * zb + sqrt(x1 * x1 * xa * xa - 2 * x1 * x1 * xa * xb + x1 * x1 * xb * xb + x1 * x1 * za * za - 2 * x1 * x1 * za * zb + x1 * x1 * zb * zb - 2 * x1 * x2 * xa * xa + 4 * x1 * x2 * xa * xb - 2 * x1 * x2 * xb * xb + 2 * x1 * xa * y1 * ya - 2 * x1 * xa * y1 * yb - 2 * x1 * xa * y2 * ya + 2 * x1 * xa * y2 * yb - 2 * x1 * xa * z1 * za + 2 * x1 * xa * z1 * zb + 2 * x1 * xa * za * zb - 2 * x1 * xa * zb * zb - 2 * x1 * xb * y1 * ya + 2 * x1 * xb * y1 * yb + 2 * x1 * xb * y2 * ya - 2 * x1 * xb * y2 * yb + 2 * x1 * xb * z1 * za - 2 * x1 * xb * z1 * zb - 2 * x1 * xb * za * za + 2 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2 * x2 * x2 * xa * xb + x2 * x2 * xb * xb - x2 * x2 * za * za + 2 * x2 * x2 * za * zb - x2 * x2 * zb * zb - 2 * x2 * xa * y1 * ya + 2 * x2 * xa * y1 * yb + 2 * x2 * xa * y2 * ya - 2 * x2 * xa * y2 * yb + 2 * x2 * xa * z1 * za - 2 * x2 * xa * z1 * zb - 2 * x2 * xa * za * zb + 2 * x2 * xa * zb * zb + 2 * x2 * xb * y1 * ya - 2 * x2 * xb * y1 * yb - 2 * x2 * xb * y2 * ya + 2 * x2 * xb * y2 * yb - 2 * x2 * xb * z1 * za + 2 * x2 * xb * z1 * zb + 2 * x2 * xb * za * za - 2 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2 * y1 * y1 * ya * yb + y1 * y1 * yb * yb + y1 * y1 * za * za - 2 * y1 * y1 * za * zb + y1 * y1 * zb * zb - 2 * y1 * y2 * ya * ya + 4 * y1 * y2 * ya * yb - 2 * y1 * y2 * yb * yb - 2 * y1 * ya * z1 * za + 2 * y1 * ya * z1 * zb + 2 * y1 * ya * za * zb - 2 * y1 * ya * zb * zb + 2 * y1 * yb * z1 * za - 2 * y1 * yb * z1 * zb - 2 * y1 * yb * za * za + 2 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2 * y2 * y2 * ya * yb + y2 * y2 * yb * yb - y2 * y2 * za * za + 2 * y2 * y2 * za * zb - y2 * y2 * zb * zb + 2 * y2 * ya * z1 * za - 2 * y2 * ya * z1 * zb - 2 * y2 * ya * za * zb + 2 * y2 * ya * zb * zb - 2 * y2 * yb * z1 * za + 2 * y2 * yb * z1 * zb + 2 * y2 * yb * za * za - 2 * y2 * yb * za * zb))/(za*za - 2*za*zb + zb*zb);
     double t4 = 0.5*((x1*x1-2*x1*xb - x2*x2 + 2*x2*xb + y1*y1 - 2 *y1*yb - y2*y2 + 2*y2*yb)/(x1*xa - x1*xb - x2*xa + x2*xb + y1*ya - y1*yb - y2*ya + y2*yb));
-
+    using std::min;
+    using std::max;
 
     if ((H1.distance2(A)-H2.distance2(A))*(H1.distance2(B)-H2.distance2(B))<=0)
 
@@ -42,19 +43,19 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2,
         std::cout<<" "<<t1<<" "<<t2<<" "<<t3<< " "<<t4<<std::endl;
 
         p = t1*A+(1-t1)*B;
-        if (t1>=0 && t1 <= 1 && p[2]<=a)
+        if (t1>=0 && t1 <= 1 && p[2]<=a && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
             return p;
         else {
             p = t2*A+(1-t2)*B;
-            if (t2>=0 && t2 <= 1 && p[2]>= a && p[2]<=b)
+            if (t2>=0 && t2 <= 1 && p[2]>= a && p[2]<=b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
                 return p;
             else {
                 p = t3*A+(1-t3)*B;
-                if (t3>=0 && t3 <= 1 && p[2]>= a && p[2]<=b)
+                if (t3>=0 && t3 <= 1 && p[2]>= a && p[2]<=b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
                     return p;
                 else {
                     p = t4*A+(1-t4)*B;
-                    if (t4>=0 && t4 <= 1 && p[2]>= b)
+                    if (t4>=0 && t4 <= 1 && p[2]>= b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
                         return p;
                 }
             }
@@ -641,7 +642,13 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
             return q;
     }
 
+    else
+    {
 
+        info = 1;
+        std::cout<< " Il n' ya pas de point quadrisecteur pour  " << H1 << ", " << H2 <<  ","   << H3 <<  "et " << H4 << std::endl;
+        return mmx::point<double>(0,0,0);
+     }
 }
 
 

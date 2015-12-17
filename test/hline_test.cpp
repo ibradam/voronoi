@@ -11,7 +11,7 @@ int main()
     print (L2);
     hline L3(-1,2,-1);
     print (L3);
-    hline L4(2,-3,-6);
+    hline L4(2,-3,3);
     print (L4);
     std::cout<<"distance "<< L2.distance2(4,-4,4)<<std::endl;
     mmx::point<double> p(2,2,5);
