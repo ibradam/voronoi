@@ -20,3 +20,7 @@ double hline::distance2(double X, double Y, double Z) const {
     mdebug()<<"constructor"<<X<<Y<<Z;
     return this->distance2( mmx::point<double>(X,Y,Z) );
 }
+
+double hline::distance2(const mmx::point<double>& A, const mmx::point<double>& B) const {
+
+}
