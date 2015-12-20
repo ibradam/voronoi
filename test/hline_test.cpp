@@ -51,6 +51,8 @@ int main()
     std:: cout << L2.distance2(q)<< std::endl;
     std:: cout << L3.distance2(q)<< std::endl;
     std:: cout << L4.distance2(q)<< std::endl;
+
+     std::cout<<"distance "<< L2.distance2(A, B)<<std::endl;
     return 0;
 
 }
