@@ -274,4 +274,4 @@ operator<<(VIEWER& os, const SELF& p) {
 #undef Viewer
 #undef Ostream
 
-#endif
+#endif //POINT_HPP

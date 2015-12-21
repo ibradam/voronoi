@@ -1,7 +1,7 @@
 #ifndef HLINE_H
 #define HLINE_H
 #include <iostream>
-#include <voronoi/point.hpp>
+#include <geometrix/point.hpp>
 
 struct hline {
 
