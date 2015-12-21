@@ -7,7 +7,7 @@ int main()
 {
     hline L1(1,2,-3);
     print (L1);
-    hline L2(1,-2,1);
+    hline L2(-2,-1,2);
     print (L2);
     hline L3(-1,2,-1);
     print (L3);
@@ -17,7 +17,7 @@ int main()
     mmx::point<double> p(2,2,5);
     std::cout<<"distance "<< L1.distance2(p)<<std::endl;
 
-    mmx::point< double> A(2,-2.5,-14), B(-2,-2.5,14);
+    mmx::point< double> A(1,-1,-2.44444), B(-2,-1,-2.22222);
     std::cout<<A<<" "<<B<<std::endl;
     std::cout<<"point-equidistant "<< equidist(L1,L2,A,B) <<std::endl;
 

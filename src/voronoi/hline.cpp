@@ -25,6 +25,7 @@ double hline::distance2(const mmx::point<double>& A, const mmx::point<double>& B
 
     mmx::point<double> v = B - A;
     mmx::point<double> w0= A - m_pt;
+     mmx::point<double> w01= B - m_pt;
     mmx::point<double> u = m_dir;
     mmx::point<double> w1;
     double a= u.dot(u);
@@ -32,26 +33,111 @@ double hline::distance2(const mmx::point<double>& A, const mmx::point<double>& B
     double c= v.dot(v);
     double d= u.dot(w0);
     double e= v.dot(w0);
+    double d1=u.dot(w01);
     double s0,t0,s1,t1,s,t;
     s0 =(b*d-a*e)/(a*c-b*b);
     t0 =(c*d-b*e)/(a*c-b*b);
     mmx::point<double> w = w0 + s*v-t*u;
+    using std::min;
+    using std::max;
     if (a*c==b*b)
     {
-        s1=0; t1=e/b;
 
+        if (d>=0 || d1>=0)
+        {
+            s1=0; t1=e/b;
+        w1=w0+s1*v-t1*u;
+         return sqrt(w1.dot(w1));
+        }
+         else if(d<0 && d1<0)
+        {   s1=0;t1=0;
+            s=1;
+            w=w0+s*v-t1*u;
+            w1=w0+s1*v-t1*u;
+            return min(sqrt(w1.dot(w1)),sqrt(w.dot(w)));
+        }
+
+    }
+
+    else if (s0>=0 && s0<=1 && t0>=0)
+    {
+        s1=s0;t1=t0;
         w1=w0+s1*v-t1*u;
         return sqrt(w1.dot(w1));
     }
 
-  else if (s0>=0 && s0<=1 && t0>=0)
-  {
-  s1=s0;t1=t0;
-  w1=w0+s1*v-t1*u;
-  return sqrt(w1.dot(w1));
-  }
+    else if (s0<0 && t0>=0)
+    {
+        s1=0;t1=d/a;
+        if(t1>=0)
+        {
+            w1=w0+s1*v-t1*u;
+            return sqrt(w1.dot(w1));
+
+        }
+        else if(t1<0)
+        {
+            s1=0;t1=0;
+            w1=w0+s1*v-t1*u;
+            return sqrt(w1.dot(w1));
+        }
+
+    }
+
+
+
+
+
+    else if (s0>1 && t0>=0)
+    {
+        s1=1;t1=(b+d)/a;
+        if(t1>=0)
+        {
+            w1=w0+s1*v-t1*u;
+            return sqrt(w1.dot(w1));
+
+        }
+        else if(t1<0)
+        {
+            s1=1;t1=0;
+            w1=w0+s1*v-t1*u;
+            return sqrt(w1.dot(w1));
+        }
+
+    }
+
+
+
+    else if (s0>=0 && s0<=1 && t0<0)
+    {
+        s1=-e/c;t1=0;
+        if(s1>=0 && s1<=1)
+        {
+            w1=w0+s1*v-t1*u;
+            return sqrt(w1.dot(w1));
+        }
+        else if(s1<0)
+        {
+            s1=0; t1=0;
+            w1=w0+s1*v-t1*u;
+            return sqrt(w1.dot(w1));
+        }
+        else if (s1>1)
+        {
+            s1=1; t1=0;
+            w1=w0+s1*v-t1*u;
+            return sqrt(w1.dot(w1));
+
+        }
+    }
+
 
 }
+
+
+
+
+
 
 
 
