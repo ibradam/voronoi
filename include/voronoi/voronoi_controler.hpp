@@ -12,6 +12,16 @@
 #define CTRL voronoi_controler<CELL,VERTEX,DISTFIELD>
 //--------------------------------------------------------------------
 TMPL
+/*!
+ * \brief The voronoi_controler struct
+ *
+ * controls the subdvision process by the following methods:
+ *  - init_cell: create the initial cell of the subdivision;
+ *  - regularity: determine the regularity of a cell;
+ *  - subdivide: split the cell;
+ *  - process_regular: process the regular cells;
+ *  - process_singular: process the singular cells;
+ */
 struct voronoi_controler: mmx::tmsh<CELL,VERTEX>
 {
 
@@ -39,7 +49,6 @@ struct voronoi_controler: mmx::tmsh<CELL,VERTEX>
     void tag_corner(Cell* cl);
 
     void boundary_point(Cell* cl);
-
     void interior_point(Cell* cl);
 
     std::vector<Cell*> m_regular;
@@ -51,6 +60,17 @@ struct voronoi_controler: mmx::tmsh<CELL,VERTEX>
 
 //--------------------------------------------------------------------
 TMPL
+/*!
+ * \brief init_cell
+ * \param fld
+ * \param xmin
+ * \param xmax
+ * \param ymin
+ * \param ymax
+ * \param zmin
+ * \param zmax
+ * \return a cell
+ */
 CELL* CTRL::init_cell(DISTFIELD* fld,
                       double xmin, double xmax, double ymin, double ymax, double zmin, double zmax)
 {
@@ -74,18 +94,43 @@ CELL* CTRL::init_cell(DISTFIELD* fld,
 
 //--------------------------------------------------------------------
 TMPL
+/*!
+ * \brief regularity
+ * \param cl: cell
+ * \return the regularity of the cell
+ * Its regularity is
+ *   - INSIDE: one active site
+ *   - BOUNDARY: 2,3 active sites
+ *   _ UNKNOWN: otherwise
+ */
 regularity_t CTRL::regularity(Cell *cl) {
+    int a = cl->m_active_site.size();
+    if(a==1)
+        return INSIDE;
+    else if(a==2)
+        return BOUNDARY_REGULAR2;
+    else if(a==3)
+        return BOUNDARY_REGULAR3;
+    return UNKNOWN;
 
 }
 
 //--------------------------------------------------------------------
 TMPL
+/*!
+ * \brief tag_corner
+ * \param cl: cell
+ *
+ *  - tag the corner of the cell with the index of the closest site.
+ *  - store the distance to the closest site.
+ *
+ */
 void CTRL::tag_corner(CELL *cl) {
   int n, t;
   double d;
   for(unsigned i=0; i<8;i++) {
     n = cl->idx(i);
-    d = f->distance2(this->vertex(n)[0],this->vertex(n)[1],this->vertex(n)[2],t);
+    d = f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
     this->vertex(n).tag(t);
     cl->set_distance(i,d);
   }

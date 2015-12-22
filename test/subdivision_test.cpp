@@ -23,7 +23,7 @@ int main()
     int i;
     cout<<"distance: "<<f->distance2(-2,-3,0, i)<<" #"<<i<<" "<< f->site(i)<<endl;
 
-    mmx::mesher<voronoi_hline<double> > mshr;
+    mmx::mesher< voronoi_hline<double> > mshr;
     mshr.set_input(mshr.controler()->init_cell(f, -1, 1, -1, 1, -1, 1));
 }
 
