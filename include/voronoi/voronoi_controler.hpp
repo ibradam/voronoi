@@ -12,8 +12,6 @@
 #define CTRL voronoi_controler<CELL,VERTEX,DISTFIELD>
 //--------------------------------------------------------------------
 TMPL
-<<<<<<< HEAD
-=======
 /*!
  * \brief The voronoi_controler struct
  *
@@ -24,7 +22,6 @@ TMPL
  *  - process_regular: process the regular cells;
  *  - process_singular: process the singular cells;
  */
->>>>>>> 2984f6fa500a4945a67475f63558b2328403ba17
 struct voronoi_controler: mmx::tmsh<CELL,VERTEX>
 {
 
@@ -52,10 +49,7 @@ struct voronoi_controler: mmx::tmsh<CELL,VERTEX>
     void tag_corner(Cell* cl);
 
     void boundary_point(Cell* cl);
-<<<<<<< HEAD
 
-=======
->>>>>>> 2984f6fa500a4945a67475f63558b2328403ba17
     void interior_point(Cell* cl);
 
     std::vector<Cell*> m_regular;
@@ -67,8 +61,6 @@ struct voronoi_controler: mmx::tmsh<CELL,VERTEX>
 
 //--------------------------------------------------------------------
 TMPL
-<<<<<<< HEAD
-=======
 /*!
  * \brief init_cell
  * \param fld
@@ -80,7 +72,6 @@ TMPL
  * \param zmax
  * \return a cell
  */
->>>>>>> 2984f6fa500a4945a67475f63558b2328403ba17
 CELL* CTRL::init_cell(DISTFIELD* fld,
                       double xmin, double xmax, double ymin, double ymax, double zmin, double zmax)
 {
@@ -104,9 +95,6 @@ CELL* CTRL::init_cell(DISTFIELD* fld,
 
 //--------------------------------------------------------------------
 TMPL
-<<<<<<< HEAD
-regularity_t CTRL::regularity(Cell *cl) {
-=======
 /*!
  * \brief regularity
  * \param cl: cell
@@ -125,14 +113,10 @@ regularity_t CTRL::regularity(Cell *cl) {
     else if(a==3)
         return BOUNDARY_REGULAR3;
     return UNKNOWN;
->>>>>>> 2984f6fa500a4945a67475f63558b2328403ba17
-
 }
 
 //--------------------------------------------------------------------
 TMPL
-<<<<<<< HEAD
-=======
 /*!
  * \brief tag_corner
  * \param cl: cell
@@ -141,17 +125,12 @@ TMPL
  *  - store the distance to the closest site.
  *
  */
->>>>>>> 2984f6fa500a4945a67475f63558b2328403ba17
 void CTRL::tag_corner(CELL *cl) {
   int n, t;
   double d;
   for(unsigned i=0; i<8;i++) {
     n = cl->idx(i);
-<<<<<<< HEAD
-    d = f->distance2(this->vertex(n)[0],this->vertex(n)[1],this->vertex(n)[2],t);
-=======
     d = f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
->>>>>>> 2984f6fa500a4945a67475f63558b2328403ba17
     this->vertex(n).tag(t);
     cl->set_distance(i,d);
   }
