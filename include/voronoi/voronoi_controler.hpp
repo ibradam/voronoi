@@ -22,7 +22,7 @@ TMPL
  *  - process_regular: process the regular cells;
  *  - process_singular: process the singular cells;
  */
-struct voronoi_controler: mmx::tmsh<CELL,VERTEX>
+struct voronoi_controler: mmx::tmsh_controler<3,CELL,VERTEX>
 {
 
     typedef double    C;
@@ -36,20 +36,16 @@ struct voronoi_controler: mmx::tmsh<CELL,VERTEX>
 
     regularity_t regularity(Cell* cl);
 
+    void vertex_tag(int n, int t) { this->vertex(n).tag(t); }
+
+    double distance(int n, int& t);
+
     void process_regular (Cell* cl);
     void process_singular(Cell* cl);
 
-    void subdivide(int v, Cell* cl, Cell*& left, Cell*& right) {
-        left  = new Cell(*cl);
-        right = new Cell(*cl);
-        this->mmx::tmsh<CELL,VERTEX>::subdivide(v,*cl,*left,*right);
-        cl->subdivide(v,*left,*right);
-    }
-
+    void subdivide(int v, Cell* cl, Cell*& left, Cell*& right);
     void tag_corner(Cell* cl);
-
     void boundary_point(Cell* cl);
-
     void interior_point(Cell* cl);
 
     std::vector<Cell*> m_regular;
@@ -88,9 +84,55 @@ CELL* CTRL::init_cell(DISTFIELD* fld,
         Vertex(xmax,ymax,zmax)
     };
 
-    this->mmx::tmsh<CELL,VERTEX>::init(p);
+    this->mmx::tmsh_controler<3,CELL,VERTEX>::init(p);
+    CELL *cl = new CELL;
+    this->tag_corner(cl);
 
-    return new CELL;
+    return cl;
+}
+//--------------------------------------------------------------------
+TMPL
+double CTRL::distance(int n, int& t) {
+   return f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
+}
+
+//--------------------------------------------------------------------
+TMPL
+void CTRL::subdivide(int v, Cell* cl, Cell*& left, Cell*& right) {
+
+    left  = new Cell(*cl);
+    right = new Cell(*cl);
+    this->mmx::tmsh_controler<3,CELL,VERTEX>::subdivide(v,*cl,*left,*right);
+
+    const typename Cell::Tuple& f0 = Cell::Face[v][0];
+    const typename Cell::Tuple& f1 = Cell::Face[v][1];
+
+    // add the active sites of the corners to left and right
+    for(unsigned k=0;k<Cell::Tuple::size;k++) {
+        left ->add_active(this->vertex(cl->idx(f0[k])).tag());
+        right->add_active(this->vertex(cl->idx(f1[k])).tag());
+    }
+
+    int t;
+    for(unsigned k=0;k<Cell::Tuple::size;k++) {
+        // get the closest site
+        this->distance(left->idx(f1[k]), t);
+
+        //mdebug()<<">> closest"<< t;
+        // tag the vertex with the index (+1) of the closest site
+        this->vertex_tag(left->idx(f1[k]),t);
+
+        left->add_active(t);
+        right->add_active(t);
+    }
+
+    /* std::cout<<"split";
+    for(unsigned k=0;k<cl->nba();k++) std::cout<<" "<<cl->m_active[k]; std::cout<<std::endl;
+    std::cout<<"left";
+    for(unsigned k=0;k<left->nba();k++) std::cout<<" "<<left->m_active[k]; std::cout<<std::endl;
+    std::cout<<"right";
+    for(unsigned k=0;k<right->nba();k++) std::cout<<" "<<right->m_active[k]; std::cout<<std::endl;
+    */
 }
 
 //--------------------------------------------------------------------
@@ -105,15 +147,20 @@ TMPL
  *   _ UNKNOWN: otherwise
  */
 regularity_t CTRL::regularity(Cell *cl) {
-    int a = cl->m_active_site.size();
-    if(a==1)
+    int a = cl->nba();
+    //mdebug()<<"regularity"<<a;
+
+    if(a<2)
         return INSIDE;
-    else if(a==2)
+    else
+        return UNKNOWN;
+     if(a==2)
         return BOUNDARY_REGULAR2;
     else if(a==3)
         return BOUNDARY_REGULAR3;
     return UNKNOWN;
 }
+
 
 //--------------------------------------------------------------------
 TMPL
@@ -127,12 +174,11 @@ TMPL
  */
 void CTRL::tag_corner(CELL *cl) {
   int n, t;
-  double d;
   for(unsigned i=0; i<8;i++) {
     n = cl->idx(i);
-    d = f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
-    this->vertex(n).tag(t);
-    cl->set_distance(i,d);
+    f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
+    this->vertex_tag(n,t);
+    cl->add_active(t);
   }
 }
 

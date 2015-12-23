@@ -32,12 +32,13 @@ double SELF::distance2(double x, double y, double z, int& i) {
     double r = m_sites[0].distance2(x,y,z), d;
     i = 0;
     for(unsigned k=1;k<this->nbs();k++) {
-        d = m_sites[1].distance2(x,y,z);
+        d = m_sites[k].distance2(x,y,z);
         if(d<r) {
             r = d;
             i=k;
         }
     }
+    //mdebug()<<"closest"<<i;
     return r;
 }
 //====================================================================

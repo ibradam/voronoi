@@ -5,7 +5,7 @@
 #pragma once
 
 #include <geometrix/regularity.hpp>
-#include <geometrix/tmsh.hpp>
+#include <geometrix/tmsh_cell.hpp>
 
 //====================================================================
 struct voronoi_cell : mmx::tmsh_cell<3> {
@@ -18,17 +18,16 @@ public:
     voronoi_cell(): tmsh_cell<3>() {}
     voronoi_cell(const voronoi_cell& cl): tmsh_cell<3>(cl) {}
 
-    void subdivide(int v, voronoi_cell &left, voronoi_cell &right);
+    void add_active(int i) {
+        //mdebug()<<"add active"<<i<< "size"<<m_active.size();
+        if(std::find(m_active.begin(), m_active.end(),i) == m_active.end())
+            m_active.push_back(i);
+        //mdebug()<<">add active"<<i<< "size"<<m_active.size();
+    }
 
-    void set_distance(int i, double d) { m_distance[i]=d; }
+    unsigned nba () const { return m_active.size(); }
 
-    double m_distance[8];
     std::vector<int> m_active;
 
 };
-
-//--------------------------------------------------------------------
-void voronoi_cell::subdivide(int v, voronoi_cell & left, voronoi_cell & right) {
-
-}
 //====================================================================

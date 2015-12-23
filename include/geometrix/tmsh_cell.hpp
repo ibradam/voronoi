@@ -86,8 +86,8 @@ struct tmsh_cell<3> {
     int  operator[](int i) const { return corners[i]; }
     int& operator[](int i)       { return corners[i]; }
 
-    int  idx(int i) const { return corners[i]; }
-    int& idx(int i)       { return corners[i]; }
+    int  idx(int i)        const { return corners[i]; }
+    int& idx(int i)              { return corners[i]; }
 
     int  lowercorner(int v, int s) const { return corners[Face[v][s][0]]; }
     int  uppercorner(int v, int s) const { return corners[Face[v][s][3]]; }

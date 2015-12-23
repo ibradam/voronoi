@@ -31,5 +31,13 @@ inline std::ostream& operator<<( std::ostream& os , const hline& L) {
     return os;
 }
 
+template <class AXLSTREAM>
+void axl_print( AXLSTREAM& os , const hline& L, double z) {
+    os<<"<line size=\"0.05\" color=\"255 0 0\">\n"
+     <<"  <point>"<<L.m_pt[0]<<" "<<L.m_pt[1] <<" "<<L.m_pt[2]<<"</point>\n"
+     <<"  <point>"<<L.m_pt[0]<<" "<<L.m_pt[1] <<" "<<z<<"</point>\n"
+     <<"</line>\n";
+}
+
 
 #endif // HLINE_H

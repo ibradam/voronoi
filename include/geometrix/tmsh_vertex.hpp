@@ -44,8 +44,10 @@ struct tmsh_vertex<2,C> {
 
     C   m_coord[3];
     int m_neighbor[4];
+
+    // The index of the point
     int m_id;
-    // The tag of the point (OUTSIDE,BOUNDARY,INSIDE)
+    // The tag of the point
     int m_tag;
 };
 
@@ -54,12 +56,12 @@ TMPL unsigned tmsh_vertex<2,C>::dim = 2;
 TMPL
 struct tmsh_vertex<3,C> {
 
-    tmsh_vertex(void): m_tag(0) {
+    tmsh_vertex(void): m_id(-1), m_tag(0) {
         m_coord[0]=0; m_coord[1]=0; m_coord[2]=0;
         for(unsigned i=0;i<6;i++) m_neighbor[i]=-1;
     };
 
-    tmsh_vertex(const C& X, const C& Y, const C& Z): m_tag(0) {
+    tmsh_vertex(const C& X, const C& Y, const C& Z): m_id(-1), m_tag(0) {
         m_coord[0]=X; m_coord[1]=Y; m_coord[2]=Z;
         for(unsigned i=0;i<6;i++) m_neighbor[i]=-1;
     };
@@ -76,6 +78,11 @@ struct tmsh_vertex<3,C> {
     static unsigned dim;
     C   m_coord[3];
     int m_neighbor[6];
+
+    // The index of the point
+    int m_id;
+
+    // The tag of the point
     int m_tag;
 
 };
