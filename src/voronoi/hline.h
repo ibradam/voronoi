@@ -17,6 +17,9 @@ struct hline {
 
     double distance2(const mmx::point<double>& A, const mmx::point<double>& B)  const;
 
+    double distance2(const hline H, const mmx::point<double>& A, const mmx::point<double>& B)  const;
+
+
     mmx::point<double> m_pt;
     mmx::point<double> m_dir;
 

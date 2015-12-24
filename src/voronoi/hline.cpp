@@ -157,6 +157,59 @@ double hline::distance2(const mmx::point<double>& A, const mmx::point<double>& B
 
 
 
+double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::point<double>& B) const {
+
+
+//hline H= hline(0,0,0);
+    mmx::point<double> O(H.m_pt[0], H.m_pt[1],H.m_pt[2]);
+    mmx::point<double> u(H.m_dir[0],H.m_dir[1],H.m_dir[2]);
+    double x1,y1,z1,xa,ya,za,xb,yb,zb;
+    x1=O[0]; y1=O[1]; z1=O[2];
+    xa=A[0]; ya=A[1]; za=A[2];
+    xb=B[0]; yb=B[1]; zb=B[2];
+    mmx::point<double> C,D;
+    using std::min;
+    using std::max;
+
+    if (xa==xb)
+
+    {
+        C=   mmx::point<double>(xa,ya,zb);
+        D=   mmx::point<double>(xa,yb,za);
+       return  H.distance2(C,B);
+
+       //min(H.distance2(A,C),H.distance2(C,B), H.distance2(B,D), H.distance2(D,A));
+
+    }
+
+    if (ya==yb)
+
+    {
+
+        C=   mmx::point<double>(xa,ya,zb);
+        D=   mmx::point<double>(xb,ya,za);
+
+       // return     min(H.distance2(A,C),H.distance2(C,B), H.distance2(B,D), H.distance2(D,A));
+
+
+
+    }
+    if (za==zb)
+
+    {
+
+        C=   mmx::point<double>(xb,ya,za);
+        D=   mmx::point<double>(xa,yb,za);
+       /* if(x1<min(xa,xb)&& x1> max(xa,xb) && y1<min(ya,yb)&& y1> max(ya,yb))
+        {
+
+            return     min(H.distance2(A,C),H.distance2(C,B), H.distance2(B,D), H.distance2(D,A));
+        }*/
+
+    }
+
+}
+
 
 
 
