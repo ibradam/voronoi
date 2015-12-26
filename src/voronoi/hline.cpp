@@ -5,7 +5,7 @@
 /*!
  * \brief hline::distance2
  * \param p
- * \return the euclidean distance from the half-line to a point p.
+ * \return the squared euclidean distance from the half-line to a point p.
  */
 double hline::distance2(const mmx::point<double>& p) const {
     mmx::point<double> u = p - m_pt;
@@ -21,6 +21,12 @@ double hline::distance2(double X, double Y, double Z) const {
     return this->distance2( mmx::point<double>(X,Y,Z) );
 }
 
+/*!
+ * \brief hline::distance2
+ * \param A
+ * \param B
+ * \return the euclidean distance from the half-line to a segment [AB].
+ */
 double hline::distance2(const mmx::point<double>& A, const mmx::point<double>& B) const {
 
     mmx::point<double> v = B - A;
@@ -155,16 +161,22 @@ double hline::distance2(const mmx::point<double>& A, const mmx::point<double>& B
 
 
 
-
+/*!
+ * \brief hline::distance2
+ * \param H
+ * \param A
+ * \param B
+ * \return the euclidean distance from the half-line H to a face of [AB].
+ */
 
 double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::point<double>& B) const {
 
 
-    //hline H= hline(0,0,0);
+
     mmx::point<double> O(H.m_pt[0], H.m_pt[1],H.m_pt[2]);
     mmx::point<double> u(H.m_dir[0],H.m_dir[1],H.m_dir[2]);
-    mmx::point<double> A1,B1,U,V,W,C,D,O1;
-    double x1,y1,z1,xa,ya,za,xb,yb,zb,a1,b1,c1,a,b,xo,yo,zo,c;
+    mmx::point<double> A1,B1,U,V,W,C,D,O1,F01,F02,F03,F04,F1,F2,F3,F4;
+    double x1,y1,z1,xa,ya,za,xb,yb,zb,a1,b1,c1,a,b,xo,yo,zo,c,x,y,z,d,d1,d2;
     xo=O[0]; yo=O[1]; zo=O[2];
     xa=A[0]; ya=A[1]; za=A[2];
     xb=B[0]; yb=B[1]; zb=B[2];
@@ -173,10 +185,7 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
     using std::max;
 
 
-
-
-
-/* ici nous procedons à la construction d'une b.o.n à partir du vecteur u=m_dir (u,v,w) et au calcul de coordonnées des point A,B O dans ( o, u,v,w) afin de simplifier le calcul.*/
+    /* ici nous procedons à la construction d'une b.o.n à partir du vecteur u=m_dir (u,v,w) et au calcul de coordonnées des point A,B O dans ( o, u,v,w) afin de simplifier le calcul.*/
 
 
     if( a!=0 || b != 0)
@@ -187,17 +196,107 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
         U= mmx::point<double>(a / a1, b / a1,  c / a1);
         V= mmx::point<double>(-b / b1,a / b1,  0);
         W= mmx::point<double>(-a * c / c1,-b * c / c1,  (a * a + b * b) / c1);
+        A1= mmx::point<double> ( c*za/a1 +((a*a*a) * a1 + a * a1 * b * b)*xa/(c1*c1) +(a * a * a1 * b + a1 * (b*b*b)) * ya/(c1*c1), (-a*a*b*b1 - (b*b*b)* b1 - b*b1 * c * c) * xa/(c1*c1) + (a*a*a * b1 + a * b * b * b1 + a * b1 * c * c)* ya /(c1*c1),  c1 *za/(a1*a1)- a * c * xa/c1 -b*c *ya/c1);
+        B1= mmx::point<double> ( c*zb/a1 +((a*a*a) * a1 + a * a1 * b * b)*xb/(c1*c1) +(a * a * a1 * b + a1 * (b*b*b)) * yb/(c1*c1), (-a*a*b*b1 - (b*b*b)* b1 - b*b1 * c * c) * xb/(c1*c1) + (a*a*a * b1 + a * b * b * b1 + a * b1 * c * c)* yb /(c1*c1),  c1 *zb/(a1*a1)- a * c * xb/c1 -b*c *yb/c1);
+        O1= mmx::point<double> ( c*zo/a1 +((a*a*a) * a1 + a * a1 * b * b)*xo/(c1*c1) +(a * a * a1 * b + a1 * (b*b*b)) * yo/(c1*c1), (-a*a*b*b1 - (b*b*b)* b1 - b*b1 * c * c) * xo/(c1*c1) + (a*a*a * b1 + a * b * b * b1 + a * b1 * c * c)* yo /(c1*c1),  c1 *zo/(a1*a1)- a * c * xo/c1 -b*c *yo/c1);
 
-        A1= mmx::point<double> ( c*za/a1 +((a*a*a) * a1 + a * a1 * b * b)*xa/(c1*c1) +(a * a * a1 * b + a1 * (b*b*b)) * ya/(c1*c1), (-a*a*b*b1 - (b*b*b)* b1 - b*b1 * c * c) * xa/(c1*c1) + (a*a*a * b1 + a * b * b * b1 + a * b1 * c * c)* ya /(c1*c1),  c1 *za/(a1*a1)- a * c * xa/c1 -b*c *ya/c1
-                                 );
-        B1= mmx::point<double> ( c*zb/a1 +((a*a*a) * a1 + a * a1 * b * b)*xb/(c1*c1) +(a * a * a1 * b + a1 * (b*b*b)) * yb/(c1*c1), (-a*a*b*b1 - (b*b*b)* b1 - b*b1 * c * c) * xb/(c1*c1) + (a*a*a * b1 + a * b * b * b1 + a * b1 * c * c)* yb /(c1*c1),  c1 *zb/(a1*a1)- a * c * xb/c1 -b*c *yb/c1
-                                 );
-        O1= mmx::point<double> ( c*zo/a1 +((a*a*a) * a1 + a * a1 * b * b)*xo/(c1*c1) +(a * a * a1 * b + a1 * (b*b*b)) * yo/(c1*c1), (-a*a*b*b1 - (b*b*b)* b1 - b*b1 * c * c) * xo/(c1*c1) + (a*a*a * b1 + a * b * b * b1 + a * b1 * c * c)* yo /(c1*c1),  c1 *zo/(a1*a1)- a * c * xo/c1 -b*c *yo/c1
-                                 );
 
+        if (A1[0]==B1[0])
+
+        {
+            x=A1[0];
+            F01 = mmx::point<double>(x,min(A1[1],B1[1]),min(A1[2],B1[2]));
+            F02 = mmx::point<double>(x,min(A1[1],B1[1]),max(A1[2],B1[2]));
+            F03 = mmx::point<double>(x,max(A1[1],B1[1]),max(A1[2],B1[2]));
+            F04 = mmx::point<double>(x,max(A1[1],B1[1]),min(A1[2],B1[2]));
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+            F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+            F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
+            if(O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
+            {
+                if (O1[0]> x)
+                {d= max((O1[0]-x),(x-O1[0]));
+                    return d;
+                }
+                else if (O1[0]<= x)
+                {
+                    d=0;
+                    return d;
+                }
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2= min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
+        }
+
+        if (A1[1]==B1[1])
+
+        {
+
+            y=A1[1];
+            F01 = mmx::point<double>(min(A1[0],B1[0]),y,min(A1[2],B1[2]));
+            F02 = mmx::point<double>(min(A1[0],B1[0]),y,max(A1[2],B1[2]));
+            F03 = mmx::point<double>(max(A1[0],B1[0]),y,max(A1[2],B1[2]));
+            F04 = mmx::point<double>(max(A1[0],B1[0]),y,min(A1[2],B1[2]));
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+              F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+              F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
+
+            if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
+            {
+                d= max((O1[1]-y),(y-O1[1]));
+                return d;
+
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2=min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
+
+
+        }
+        if (A1[2]==B1[2])
+
+        {
+
+            z=A1[2];
+            F01 = mmx::point<double>(min(A1[0],B1[0]),min(A1[1],B1[1]),z);
+            F02 = mmx::point<double>(min(A1[0],B1[0]),max(A1[1],B1[1]),z);
+            F03 = mmx::point<double>(max(A1[0],B1[0]),max(A1[1],B1[1]),z);
+            F04 = mmx::point<double>(max(A1[0],B1[0]),min(A1[1],B1[1]),z);
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+              F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+              F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
+
+            if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]))
+            {
+                d= max((O1[2]-z), (z-O1[2]));
+                return d;
+
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2= min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
+
+        }
     }
-
-
 
     if( a!=0 || c != 0)
     {
@@ -207,21 +306,106 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
         U= mmx::point<double>(a / a1, b / a1,  c / a1);
         V= mmx::point<double>(c / b1,0, -a / b1);
         W= mmx::point<double>(-a * b / c1,(a * a + c * c) / c1,  -b * c / c1);
+        A1= mmx::point<double> (b * ya / a1 + ((a*a*a) * a1 + a * a1 * c * c) * xa /(c1*c1) - (-a * a * a1 * c - a1 * (c*c*c)) * za /(c1*c1), (a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * xa / (c1*c1) - ((a*a*a) * b1 + a * b * b * b1 + a * b1 * c * c) * za / (c1*c1), c1 * ya / (a1*a1) - a * b * xa / c1 - b * c * za / c1);
+        B1= mmx::point<double> ( b * yb / a1 + ((a*a*a) * a1 + a * a1 * c * c) * xb /(c1*c1) - (-a * a * a1 * c - a1 * (c*c*c)) * zb /(c1*c1), (a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * xb / (c1*c1) - ((a*a*a) * b1 + a * b * b * b1 + a * b1 * c * c) * zb / (c1*c1), c1 * yb / (a1*a1) - a * b * xb / c1 - b * c * zb / c1);
+        O1= mmx::point<double> ( b * yo / a1 + ((a*a*a) * a1 + a * a1 * c * c) * xo /(c1*c1) - (-a * a * a1 * c - a1 * (c*c*c)) * zo /(c1*c1), (a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * xo / (c1*c1) - ((a*a*a) * b1 + a * b * b * b1 + a * b1 * c * c) * zo / (c1*c1), c1 * yo / (a1*a1) - a * b * xo / c1 - b * c * zo / c1);
+
+        if (A1[0]==B1[0])
+
+        {
+            x=A1[0];
+            F01 = mmx::point<double>(x,min(A1[1],B1[1]),min(A1[2],B1[2]));
+            F02 = mmx::point<double>(x,min(A1[1],B1[1]),max(A1[2],B1[2]));
+            F03 = mmx::point<double>(x,max(A1[1],B1[1]),max(A1[2],B1[2]));
+            F04 = mmx::point<double>(x,max(A1[1],B1[1]),min(A1[2],B1[2]));
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+            F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+            F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
+            if(O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
+            {
+                if (O1[0]> x)
+                { d= max((O1[0]-x), (x-O1[0]));
+                    return d;
+                }
+                else if (O1[0]<= x)
+                {
+                    d=0;
+                    return d;
+                }
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2= min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
+        }
+
+        if (A1[1]==B1[1])
+
+        {
+
+            y=A1[1];
+            F01 = mmx::point<double>(min(A1[0],B1[0]),y,min(A1[2],B1[2]));
+            F02 = mmx::point<double>(min(A1[0],B1[0]),y,max(A1[2],B1[2]));
+            F03 = mmx::point<double>(max(A1[0],B1[0]),y,max(A1[2],B1[2]));
+            F04 = mmx::point<double>(max(A1[0],B1[0]),y,min(A1[2],B1[2]));
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+              F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+              F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
+
+            if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
+            {
+                 max((O1[1]-y), (y-O1[1]));
+                return d;
+
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2=min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
 
 
-        A1= mmx::point<double> (b * ya / a1 + ((a*a*a) * a1 + a * a1 * c * c) * xa /(c1*c1) - (-a * a * a1 * c - a1 * (c*c*c)) * za /(c1*c1), (a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * xa / (c1*c1) - ((a*a*a) * b1 + a * b * b * b1 + a * b1 * c * c) * za / (c1*c1), c1 * ya / (a1*a1) - a * b * xa / c1 - b * c * za / c1
-                                 );
-        B1= mmx::point<double> ( b * yb / a1 + ((a*a*a) * a1 + a * a1 * c * c) * xb /(c1*c1) - (-a * a * a1 * c - a1 * (c*c*c)) * zb /(c1*c1), (a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * xb / (c1*c1) - ((a*a*a) * b1 + a * b * b * b1 + a * b1 * c * c) * zb / (c1*c1), c1 * yb / (a1*a1) - a * b * xb / c1 - b * c * zb / c1
-                                 );
-        O1= mmx::point<double> ( b * yo / a1 + ((a*a*a) * a1 + a * a1 * c * c) * xo /(c1*c1) - (-a * a * a1 * c - a1 * (c*c*c)) * zo /(c1*c1), (a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * xo / (c1*c1) - ((a*a*a) * b1 + a * b * b * b1 + a * b1 * c * c) * zo / (c1*c1), c1 * yo / (a1*a1) - a * b * xo / c1 - b * c * zo / c1
-                                 );
+        }
+        if (A1[2]==B1[2])
 
+        {
+
+            z=A1[2];
+            F01 = mmx::point<double>(min(A1[0],B1[0]),min(A1[1],B1[1]),z);
+            F02 = mmx::point<double>(min(A1[0],B1[0]),max(A1[1],B1[1]),z);
+            F03 = mmx::point<double>(max(A1[0],B1[0]),max(A1[1],B1[1]),z);
+            F04 = mmx::point<double>(max(A1[0],B1[0]),min(A1[1],B1[1]),z);
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+              F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+              F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
+
+            if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]))
+            {
+               d = max((O1[2]-z), (z-O1[2]));
+                return d;
+
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2= min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
+
+        }
     }
-
-
-
-
-
 
     if( b!=0 || c != 0)
     {
@@ -231,108 +415,105 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
         U= mmx::point<double>(a / a1, b / a1,  c / a1);
         V= mmx::point<double>(0,-c/b1, b / b1);
         W= mmx::point<double>((b * b + c * c) / c1,-a * b / c1,  -a * c / c1);
+        A1= mmx::point<double> ( a * xa / a1 - (-a1 * (b*b*b) - a1 * b * c * c) * ya / (c1*c1) + (a1 * b * b * c + a1 * (c*c*c)) * za / (c1*c1), -(a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * ya / (c1*c1) + (a * a * b * b1 + (b*b*b) * b1 + b * b1 * c * c) * za /(c1*c1), c1 * xa / (a1*a1) - a * b * ya / c1 - a * c * za / c1);
+        B1= mmx::point<double> ( a * xb / a1 - (-a1 * (b*b*b) - a1 * b * c * c) * yb / (c1*c1) + (a1 * b * b * c + a1 * (c*c*c)) * zb / (c1*c1), -(a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * yb / (c1*c1) + (a * a * b * b1 + (b*b*b) * b1 + b * b1 * c * c) * zb /(c1*c1), c1 * xb / (a1*a1) - a * b * yb / c1 - a * c * zb / c1);
+        O1= mmx::point<double> ( a * xo / a1 - (-a1 * (b*b*b) - a1 * b * c * c) * yo / (c1*c1) + (a1 * b * b * c + a1 * (c*c*c)) * zo / (c1*c1), -(a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * yo / (c1*c1) + (a * a * b * b1 + (b*b*b) * b1 + b * b1 * c * c) * zo /(c1*c1), c1 * xo / (a1*a1) - a * b * yo / c1 - a * c * zo / c1);
+
+        if (A1[0]==B1[0])
+
+        {
+            x=A1[0];
+            F01 = mmx::point<double>(x,min(A1[1],B1[1]),min(A1[2],B1[2]));
+            F02 = mmx::point<double>(x,min(A1[1],B1[1]),max(A1[2],B1[2]));
+            F03 = mmx::point<double>(x,max(A1[1],B1[1]),max(A1[2],B1[2]));
+            F04 = mmx::point<double>(x,max(A1[1],B1[1]),min(A1[2],B1[2]));
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+            F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+            F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
+            if(O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
+            {
+                if (O1[0]> x)
+                {d= max((O1[0]-x), (x-O1[0]));
+                    return d;
+                }
+                else if (O1[0]<= x)
+                {
+                    d=0;
+                    return d;
+                }
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2= min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
+        }
+
+        if (A1[1]==B1[1])
 
-
-        A1= mmx::point<double> ( a * xa / a1 - (-a1 * (b*b*b) - a1 * b * c * c) * ya / (c1*c1) + (a1 * b * b * c + a1 * (c*c*c)) * za / (c1*c1), -(a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * ya / (c1*c1) + (a * a * b * b1 + (b*b*b) * b1 + b * b1 * c * c) * za /(c1*c1), c1 * xa / (a1*a1) - a * b * ya / c1 - a * c * za / c1
-                    );
-        B1= mmx::point<double> ( a * xb / a1 - (-a1 * (b*b*b) - a1 * b * c * c) * yb / (c1*c1) + (a1 * b * b * c + a1 * (c*c*c)) * zb / (c1*c1), -(a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * yb / (c1*c1) + (a * a * b * b1 + (b*b*b) * b1 + b * b1 * c * c) * zb /(c1*c1), c1 * xb / (a1*a1) - a * b * yb / c1 - a * c * zb / c1
-                                 );
-        O1= mmx::point<double> ( a * xo / a1 - (-a1 * (b*b*b) - a1 * b * c * c) * yo / (c1*c1) + (a1 * b * b * c + a1 * (c*c*c)) * zo / (c1*c1), -(a * a * b1 * c + b * b * b1 * c + b1 * (c*c*c)) * yo / (c1*c1) + (a * a * b * b1 + (b*b*b) * b1 + b * b1 * c * c) * zo /(c1*c1), c1 * xo / (a1*a1) - a * b * yo / c1 - a * c * zo / c1
-                                 );
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    if (xa==xb)
-
-    {
-        C=   mmx::point<double>(xa,ya,zb);
-        D=   mmx::point<double>(xa,yb,za);
-        return  H.distance2(C,B);
-
-        //min(H.distance2(A,C),H.distance2(C,B), H.distance2(B,D), H.distance2(D,A));
-
-    }
-
-    if (ya==yb)
-
-    {
-
-        C=   mmx::point<double>(xa,ya,zb);
-        D=   mmx::point<double>(xb,ya,za);
-
-        // return     min(H.distance2(A,C),H.distance2(C,B), H.distance2(B,D), H.distance2(D,A));
-
-
-
-    }
-    if (za==zb)
-
-    {
-
-        C=   mmx::point<double>(xb,ya,za);
-        D=   mmx::point<double>(xa,yb,za);
-        /* if(x1<min(xa,xb)&& x1> max(xa,xb) && y1<min(ya,yb)&& y1> max(ya,yb))
         {
 
-            return     min(H.distance2(A,C),H.distance2(C,B), H.distance2(B,D), H.distance2(D,A));
-        }*/
+            y=A1[1];
+            F01 = mmx::point<double>(min(A1[0],B1[0]),y,min(A1[2],B1[2]));
+            F02 = mmx::point<double>(min(A1[0],B1[0]),y,max(A1[2],B1[2]));
+            F03 = mmx::point<double>(max(A1[0],B1[0]),y,max(A1[2],B1[2]));
+            F04 = mmx::point<double>(max(A1[0],B1[0]),y,min(A1[2],B1[2]));
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+              F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+              F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
 
+            if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
+            {
+               d= max((O1[1]-y), (y-O1[1]));
+                return d;
+
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2=min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
+
+
+        }
+        if (A1[2]==B1[2])
+
+        {
+
+            z=A1[2];
+            F01 = mmx::point<double>(min(A1[0],B1[0]),min(A1[1],B1[1]),z);
+            F02 = mmx::point<double>(min(A1[0],B1[0]),max(A1[1],B1[1]),z);
+            F03 = mmx::point<double>(max(A1[0],B1[0]),max(A1[1],B1[1]),z);
+            F04 = mmx::point<double>(max(A1[0],B1[0]),min(A1[1],B1[1]),z);
+            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+              F2  = F02[0]*U+F02[1]*V+F02[2]*W;
+              F3  = F03[0]*U+F03[1]*V+F03[2]*W;
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            hline L1 (O1[0],O1[1],O1[2]);
+
+            if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]))
+            {
+               d= max((O1[2]-z), (z-O1[2]));
+                return d;
+
+            }
+            else
+            {
+                d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
+                d2= min(L1.distance2(F03, F04),L1.distance2(F04, F01));
+                d=min(d1,d2);
+                return d;
+            }
+
+        }
     }
 
 }
