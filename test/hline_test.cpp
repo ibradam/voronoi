@@ -7,7 +7,7 @@ int main()
 {
     hline L1(1,2,-3);
     print (L1);
-    hline L2(2,1,2);
+    hline L2(-2,1,2);
     print (L2);
     hline L3(-1,2,-1);
     print (L3);

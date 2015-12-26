@@ -209,12 +209,12 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(x,min(A1[1],B1[1]),max(A1[2],B1[2]));
             F03 = mmx::point<double>(x,max(A1[1],B1[1]),max(A1[2],B1[2]));
             F04 = mmx::point<double>(x,max(A1[1],B1[1]),min(A1[2],B1[2]));
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+             F1  = F01[0]*U+F01[1]*V+F01[2]*W;
             F2  = F02[0]*U+F02[1]*V+F02[2]*W;
             F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-            F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
-            std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+            std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
             if(O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
             {
                 if (O1[0]> x)
@@ -245,12 +245,12 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(min(A1[0],B1[0]),y,max(A1[2],B1[2]));
             F03 = mmx::point<double>(max(A1[0],B1[0]),y,max(A1[2],B1[2]));
             F04 = mmx::point<double>(max(A1[0],B1[0]),y,min(A1[2],B1[2]));
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+             F1  = F01[0]*U+F01[1]*V+F01[2]*W;
               F2  = F02[0]*U+F02[1]*V+F02[2]*W;
               F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
- std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+ std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
  if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
             {
                 d= max((O1[1]-y),(y-O1[1]));
@@ -276,12 +276,12 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(min(A1[0],B1[0]),max(A1[1],B1[1]),z);
             F03 = mmx::point<double>(max(A1[0],B1[0]),max(A1[1],B1[1]),z);
             F04 = mmx::point<double>(max(A1[0],B1[0]),min(A1[1],B1[1]),z);
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F1  = F01[0]*U+F01[1]*V+F01[2]*W;
               F2  = F02[0]*U+F02[1]*V+F02[2]*W;
               F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
-            std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+            std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
             if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]))
             {
                 d= max((O1[2]-z), (z-O1[2]));
@@ -319,12 +319,12 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(x,min(A1[1],B1[1]),max(A1[2],B1[2]));
             F03 = mmx::point<double>(x,max(A1[1],B1[1]),max(A1[2],B1[2]));
             F04 = mmx::point<double>(x,max(A1[1],B1[1]),min(A1[2],B1[2]));
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F1  = F01[0]*U+F01[1]*V+F01[2]*W;
             F2  = F02[0]*U+F02[1]*V+F02[2]*W;
             F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-            F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
-             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
             if(O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
             {
                 if (O1[0]> x)
@@ -333,7 +333,9 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
                 }
                 else if (O1[0]<= x)
                 {
+
                     d=0;
+                     std::cout<<" "<<d<<std::endl;
                     return d;
                 }
             }
@@ -342,6 +344,7 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
                 d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
                 d2= min(L1.distance2(F03, F04),L1.distance2(F04, F01));
                 d=min(d1,d2);
+                 std::cout<<" "<<d1<<" "<<d2<<std::endl;
                 return d;
             }
         }
@@ -355,15 +358,16 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(min(A1[0],B1[0]),y,max(A1[2],B1[2]));
             F03 = mmx::point<double>(max(A1[0],B1[0]),y,max(A1[2],B1[2]));
             F04 = mmx::point<double>(max(A1[0],B1[0]),y,min(A1[2],B1[2]));
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F1  = F01[0]*U+F01[1]*V+F01[2]*W;
               F2  = F02[0]*U+F02[1]*V+F02[2]*W;
               F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
-             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
             if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
             {
-                max((O1[1]-y), (y-O1[1]));
+                d=max((O1[1]-y), (y-O1[1]));
+                 std::cout<<" "<<d<<std::endl;
                 return d;
 
             }
@@ -372,6 +376,7 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
                 d1= min(L1.distance2(F01, F02),L1.distance2(F02, F03));
                 d2=min(L1.distance2(F03, F04),L1.distance2(F04, F01));
                 d=min(d1,d2);
+                 std::cout<<" "<<d1<<" "<<d2<<std::endl;
                 return d;
             }
 
@@ -386,12 +391,12 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(min(A1[0],B1[0]),max(A1[1],B1[1]),z);
             F03 = mmx::point<double>(max(A1[0],B1[0]),max(A1[1],B1[1]),z);
             F04 = mmx::point<double>(max(A1[0],B1[0]),min(A1[1],B1[1]),z);
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F1  = F01[0]*U+F01[1]*V+F01[2]*W;
               F2  = F02[0]*U+F02[1]*V+F02[2]*W;
               F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
-             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
             if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]))
             {
                 d = max((O1[2]-z), (z-O1[2]));
@@ -429,12 +434,12 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(x,min(A1[1],B1[1]),max(A1[2],B1[2]));
             F03 = mmx::point<double>(x,max(A1[1],B1[1]),max(A1[2],B1[2]));
             F04 = mmx::point<double>(x,max(A1[1],B1[1]),min(A1[2],B1[2]));
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F1  = F01[0]*U+F01[1]*V+F01[2]*W;
             F2  = F02[0]*U+F02[1]*V+F02[2]*W;
             F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-            F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+            F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
-             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
             if(O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
             {
                 if (O1[0]> x)
@@ -465,12 +470,12 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(min(A1[0],B1[0]),y,max(A1[2],B1[2]));
             F03 = mmx::point<double>(max(A1[0],B1[0]),y,max(A1[2],B1[2]));
             F04 = mmx::point<double>(max(A1[0],B1[0]),y,min(A1[2],B1[2]));
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+            F1  = F01[0]*U+F01[1]*V+F01[2]*W;
               F2  = F02[0]*U+F02[1]*V+F02[2]*W;
               F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
-             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+             std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
             if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[2]>=min(A1[2],B1[2]) && O1[2]<=max(A1[2],B1[2]))
             {
                 d= max((O1[1]-y), (y-O1[1]));
@@ -496,12 +501,12 @@ double hline::distance2(const hline H, const mmx::point<double>& A, const mmx::p
             F02 = mmx::point<double>(min(A1[0],B1[0]),max(A1[1],B1[1]),z);
             F03 = mmx::point<double>(max(A1[0],B1[0]),max(A1[1],B1[1]),z);
             F04 = mmx::point<double>(max(A1[0],B1[0]),min(A1[1],B1[1]),z);
-            /*  F1  = F01[0]*U+F01[1]*V+F01[2]*W;
+             F1  = F01[0]*U+F01[1]*V+F01[2]*W;
               F2  = F02[0]*U+F02[1]*V+F02[2]*W;
               F3  = F03[0]*U+F03[1]*V+F03[2]*W;
-              F4  = F04[0]*U+F04[1]*V+F04[2]*W;*/
+              F4  = F04[0]*U+F04[1]*V+F04[2]*W;
             hline L1 (O1[0],O1[1],O1[2]);
-            std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<U<<" "<<V<<" "<<W<<std::endl;
+            std::cout<<" "<<O1<<" "<<F01<<" "<<F02<< " "<<F03<< " "<<F04<< " "<<F1<<" "<<F2<< " "<<F3<< " "<<F4<<std::endl;
             if(O1[0]>=min(A1[0],B1[0]) && O1[0]<=max(A1[0],B1[0]) && O1[1]>=min(A1[1],B1[1]) && O1[1]<=max(A1[1],B1[1]))
             {
                 d= max((O1[2]-z), (z-O1[2]));
