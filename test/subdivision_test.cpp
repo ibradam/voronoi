@@ -20,6 +20,7 @@ int main()
     distfield<hline>* f = new distfield<hline>;
     for(unsigned i=0;i<N;i++) f->add(L[i]);
 
+
     int t;
     cout<<"distance^2: "<<f->distance2(-2,-3,0, t)<<" #"<<t<<" "<< f->site(t)<<endl;
 
