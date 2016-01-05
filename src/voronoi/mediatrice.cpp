@@ -8,7 +8,7 @@
  * \param H2
  * \param A
  * \param B
- * \return the point equidistant to H1 and H2 on the segment [A,B]
+ * \return the  equidistant point to H1 and H2 on the segment [A,B]
  */
 mmx::point<double> equidist(const hline& H1 , const hline& H2,
                             const mmx::point<double>& A,
