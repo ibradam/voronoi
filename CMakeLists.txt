@@ -79,7 +79,7 @@ if (EXISTS ${PROJECT_SOURCE_DIR}/cmake/voronoi-config.h.in)
 endif (EXISTS ${PROJECT_SOURCE_DIR}/cmake/voronoi-config.h.in)
 
 include_directories ( ${CMAKE_BINARY_DIR}/include ${PROJECT_SOURCE_DIR}/src)
-LINK_LIBRARIES(voronoi)
+
 ######################################################################
 # Subdirectories
 ######################################################################
