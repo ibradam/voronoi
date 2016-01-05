@@ -12,6 +12,7 @@
 #
 ######################################################################
 
-FILE(GLOB SRC_HEADERS "*.hpp*")
+FILE(GLOB INCLUDE_HEADERS "*.hpp*")
 
+add_custom_target (${PROJECT_NAME}_include_headers SOURCES ${INCLUDE_HEADERS})
 
