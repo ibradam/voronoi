@@ -12,7 +12,7 @@ int main()
     hline L[4] = {
         hline(1,2,-3),
         hline(1,-2,1),
-        hline(-0.9,2.1,-1),
+        hline(-1,2,-1),
         hline(2,-3,3)
     };
     int N = 4;
