@@ -17,7 +17,7 @@ int main()
     mmx::point<double> p(2,2,5);
     std::cout<<"distance "<< L1.distance2(p)<<std::endl;
 
-    mmx::point< double> A(-2,3,4), B(2,3,3);
+    mmx::point< double> A(-2,3,1), B(2,3,4);
     std::cout<<A<<" "<<B<<std::endl;
     std::cout<<"point-equidistant "<< equidist(L1,L2,A,B) <<std::endl;
 

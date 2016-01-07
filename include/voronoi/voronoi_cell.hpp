@@ -8,6 +8,9 @@
 #include <geometrix/tmsh_cell.hpp>
 
 //====================================================================
+/*!
+ * \brief The voronoi_cell struct
+ */
 struct voronoi_cell : mmx::tmsh_cell<3> {
 
     typedef double              C;
