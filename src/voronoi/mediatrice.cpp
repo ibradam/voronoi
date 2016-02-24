@@ -40,7 +40,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2,
             b = H1.m_pt[2]; a = H2.m_pt[2];
             t2=tt21; t3=tt22;
         }
-        std::cout<<" "<<t1<<" "<<t2<<" "<<t3<< " "<<t4<<std::endl;
+        //std::cout<<" "<<t1<<" "<<t2<<" "<<t3<< " "<<t4<<std::endl;
 
         p = t1*A+(1-t1)*B;
         if (t1>=0 && t1 <= 1 && p[2]<=a && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))

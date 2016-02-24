@@ -4,8 +4,8 @@
  **********************************************************************/
 #pragma once
 
-#include <geometrix/mesher.hpp>
-#include <geometrix/polygonizer3d.hpp>
+#include <geometrix/subdivider.hpp>
+#include <geometrix/polygonizer3d_mc.hpp>
 #include <voronoi/voronoi_cell.hpp>
 #include <voronoi/voronoi_controler.hpp>
 #include <voronoi/distfield.hpp>
@@ -19,7 +19,7 @@ struct voronoi_hline {
     typedef  voronoi_cell                               Cell;
     typedef  distfield<hline>                           Distfield;
     typedef  voronoi_controler<Cell, Vertex, Distfield> Controler;
-    typedef  mmx::polygonizer3d<Controler>              Polygonizer;
+    typedef  mmx::polygonizer3d_mc<Controler>           Polygonizer;
 };
 
 //====================================================================

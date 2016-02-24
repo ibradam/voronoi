@@ -17,7 +17,7 @@ struct axldebug {
 
     enum mode {init, app};
 
-    axldebug( mode md = app) {
+    axldebug( mode md = app) : m_color(255,0,0) {
         m_file = std::string(AXL_DEBUG_PREFIX)+"tmp.axl";
 
         if (md == init) {
@@ -28,7 +28,7 @@ struct axldebug {
         }
     }
 
-    axldebug(const char* file, mode md = app) {
+    axldebug(const char* file, mode md = app): m_color(255,0,0) {
         m_file = std::string(AXL_DEBUG_PREFIX)+file;
 
         if (md == init) {
@@ -56,6 +56,8 @@ struct axldebug {
         return system(cmd.c_str());
     }
 
+    void set_color(int r, int g, int b) { m_color = mmx::color(r,g,b); }
+
     axldebug& operator << (const char* x)  { m_f<< x; return *this; }
     axldebug& operator << (int x)          { m_f<< x; return *this; }
     axldebug& operator << (unsigned x)     { m_f<< x; return *this; }
@@ -63,11 +65,13 @@ struct axldebug {
 
     template<class C, class V>
     axldebug& operator<< (const mmx::mesh<C,V>& msh) {
-        mmx::axl_print(*this,msh,mmx::color(255,0,0));
+        mmx::axl_print(*this,msh,m_color);
         return *this;
     }
+
     std::fstream m_f;
     std::string  m_file;
+    mmx::color   m_color;
 
 };
 

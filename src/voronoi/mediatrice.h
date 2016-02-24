@@ -16,4 +16,3 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3, 
 
 
 #endif // MEDIATRICE_H
-

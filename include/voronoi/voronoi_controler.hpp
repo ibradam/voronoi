@@ -4,6 +4,7 @@
  **********************************************************************/
 #pragma once
 
+#include <voronoi/mediatrice.h>
 #include <geometrix/regularity.hpp>
 #include <geometrix/tmsh_controler3.hpp>
 
@@ -36,7 +37,7 @@ struct voronoi_controler: mmx::tmsh_controler<3,CELL,VERTEX>
 
     regularity_t regularity(Cell* cl);
 
-    void vertex_tag(int n, int t) { this->vertex(n).tag(t); }
+    //void vertex_tag(int n, int t) { this->vertex(n).tag(t); }
 
     double distance(int n, int& t);
 
@@ -133,7 +134,7 @@ void CTRL::subdivide(int v, Cell* cl, Cell*& left, Cell*& right) {
 
         //mdebug()<<">> closest"<< t;
         // tag the vertex with the index (+1) of the closest site
-        this->vertex_tag(left->idx(f1[k]),t);
+        this->vertex(left->idx(f1[k])).tag(t);
 
         left->add_active(t);
         right->add_active(t);
@@ -163,6 +164,17 @@ regularity_t CTRL::regularity(Cell *cl) {
     int a = cl->nba();
 
     //mdebug()<<"regularity"<<a;
+
+    if(a==1)
+        return INSIDE;
+    else  if(a==2)
+        return BOUNDARY;
+    else
+        return UNKNOWN;
+
+    //-----------------------------------------------------------
+    // To be used later
+
     mmx::tmsh_vertex < 3, double> F0 = this-> vertex(cl-> idx(0));
     mmx::tmsh_vertex < 3, double> F1 = this-> vertex(cl-> idx(1));
     mmx::tmsh_vertex < 3, double> F2 = this-> vertex(cl-> idx(2));
@@ -242,6 +254,7 @@ regularity_t CTRL::regularity(Cell *cl) {
 
     if(a>5) return UNKNOWN;
 
+    return UNKNOWN;
 }
 
 
@@ -260,7 +273,7 @@ void CTRL::tag_corner(CELL *cl) {
     for(unsigned i=0; i<8;i++) {
         n = cl->idx(i);
         f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
-        this->vertex_tag(n,t);
+        this->vertex(n).tag(t);
         cl->add_active(t);
     }
 }
@@ -269,8 +282,34 @@ void CTRL::tag_corner(CELL *cl) {
 TMPL
 void CTRL::boundary_point(Cell* cl) {
 
-}
+    int n;
+    mmx::point<double> A(0,0,0), B(0,0,0), m(0,0,0);
 
+    for(int i=0; i<12; i++) {
+        int n0 = cl->idx(mmx::tmsh_cell<3>::Edge[i][0]),
+            n1 = cl->idx(mmx::tmsh_cell<3>::Edge[i][1]);
+        int v = mmx::tmsh_cell<3>::EdgeDir[i];
+        if( this->vertex(n0).tag() != this->vertex(n1).tag()
+                && this->vertex(n0).tag() != -1
+                && this->vertex(n1).tag() != -1) {
+            //mdebug()<<"distinct"<<n0<<n1;
+            for(unsigned k=0;k<3;k++) {
+                A[k] = this->vertex(n0)[k];
+                B[k] = this->vertex(n1)[k];
+            }
+
+            mdebug()<<"equidist"<< this->vertex(n0).tag() << this->vertex(n1).tag()
+                   << ":" << f->site(this->vertex(n0).tag())<<","<< f->site(this->vertex(n1).tag())
+                   << "\nin segment"<< A<<"-"<<B;
+            m = equidist(f->site(this->vertex(n0).tag()), f->site(this->vertex(n1).tag()), A, B);
+            mdebug() <<" --> " << m;
+            n = this->insert_vertex( Vertex(m[0],m[1],m[2]), n0, n1, v);
+            mdebug() <<"inserted point" <<n<< m<<"\n";
+            this->vertex(n).tag(-1);
+        }
+    }
+
+}
 //--------------------------------------------------------------------
 TMPL
 void CTRL::interior_point(Cell* cl) {
@@ -280,6 +319,8 @@ void CTRL::interior_point(Cell* cl) {
 //--------------------------------------------------------------------
 TMPL
 void CTRL::process_regular(Cell* cl) {
+    tag_corner(cl);
+    boundary_point(cl);
     m_regular.push_back(cl);
 }
 
