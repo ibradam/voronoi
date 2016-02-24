@@ -28,7 +28,7 @@ struct tmsh_controler<3,CELL,VERTEX> {
     tmsh_controler(): m_eps(1e-6) {}
 
     const Vertex&  vertex(int i) const { return m_vertices[i]; }
-    Vertex&  vertex(int i)       { return m_vertices[i]; }
+    Vertex&        vertex(int i)       { return m_vertices[i]; }
 
     void init(VERTEX cl[]);
 

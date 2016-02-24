@@ -5,7 +5,7 @@
 #pragma once
 
 #include <geometrix/regularity.hpp>
-#include <geometrix/tmsh.hpp>
+#include <geometrix/tmsh_controler3.hpp>
 
 //====================================================================
 #define TMPL template<class CELL, class VERTEX, class DISTFIELD>
@@ -148,17 +148,22 @@ TMPL
  */
 regularity_t CTRL::regularity(Cell *cl) {
     int a = cl->nba();
+
+    f->site(cl->m_active[0]);
+
     //mdebug()<<"regularity"<<a;
 
     if(a<2)
         return INSIDE;
     else
         return UNKNOWN;
+    /*
      if(a==2)
         return BOUNDARY_REGULAR2;
     else if(a==3)
         return BOUNDARY_REGULAR3;
     return UNKNOWN;
+    */
 }
 
 

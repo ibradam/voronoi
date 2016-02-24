@@ -89,6 +89,10 @@ struct tmsh_vertex<3,C> {
 
 TMPL unsigned tmsh_vertex<3,C>::dim = 3;
 
+template <class M, class P>
+void set_middle(M& m, const P& a, const P& b) {
+    for(unsigned i=0;i<M::dim;i++) m[i]=(a[i]+b[i])/2.;
+}
 //--------------------------------------------------------------------
 } /* namespace mmx */
 //====================================================================
