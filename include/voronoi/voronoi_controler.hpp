@@ -92,12 +92,25 @@ CELL* CTRL::init_cell(DISTFIELD* fld,
 }
 //--------------------------------------------------------------------
 TMPL
+/*!
+ * \brief CTRL::distance
+ * \param n
+ * \param t
+ * \return
+ */
 double CTRL::distance(int n, int& t) {
-   return f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
+    return f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
 }
 
 //--------------------------------------------------------------------
 TMPL
+/*!
+ * \brief CTRL::subdivide
+ * \param v
+ * \param cl
+ * \param left
+ * \param right
+ */
 void CTRL::subdivide(int v, Cell* cl, Cell*& left, Cell*& right) {
 
     left  = new Cell(*cl);
@@ -143,27 +156,92 @@ TMPL
  * \return the regularity of the cell
  * Its regularity is
  *   - INSIDE: one active site
- *   - BOUNDARY: 2,3 active sites
+ *   - BOUNDARY: 2,3,4 active sites
  *   _ UNKNOWN: otherwise
  */
 regularity_t CTRL::regularity(Cell *cl) {
     int a = cl->nba();
 
-    f->site(cl->m_active[0]);
-
     //mdebug()<<"regularity"<<a;
+    mmx::tmsh_vertex < 3, double> F0 = this-> vertex(cl-> idx(0));
+    mmx::tmsh_vertex < 3, double> F1 = this-> vertex(cl-> idx(1));
+    mmx::tmsh_vertex < 3, double> F2 = this-> vertex(cl-> idx(2));
+    mmx::tmsh_vertex < 3, double> F3 = this-> vertex(cl-> idx(3));
+    mmx::tmsh_vertex < 3, double> F4 = this-> vertex(cl-> idx(4));
+    mmx::tmsh_vertex < 3, double> F5 = this-> vertex(cl-> idx(5));
+    mmx::tmsh_vertex < 3, double> F6 = this-> vertex(cl-> idx(6));
+    mmx::tmsh_vertex < 3, double> F7 = this-> vertex(cl-> idx(7));
+    double m1,m2,m3,M1,M2,M3;
+    m1=F0[0];m2=F0[1];m3=F0[2];
+    M1=F7[0];M2=F7[1];M3=F7[2];
 
-    if(a<2)
+    if(a==1)
         return INSIDE;
-    else
-        return UNKNOWN;
-    /*
-     if(a==2)
-        return BOUNDARY_REGULAR2;
-    else if(a==3)
-        return BOUNDARY_REGULAR3;
-    return UNKNOWN;
-    */
+
+    if(a==2)
+    {
+        for(unsigned v=0; v<3; v++ ) {
+            for(unsigned s=0; s<2; s++) {
+                unsigned c=0;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][0])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][1])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][1])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][3])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][3])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][2])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][2])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][0])).tag() ) c++;
+                if (c>2) return UNKNOWN;
+            }
+        }
+        return BOUNDARY;
+
+    }
+
+    else  if(a==3)
+    {
+        for(unsigned v=0; v<3; v++ ) {
+            for(unsigned s=0; s<2; s++) {
+                unsigned c=0;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][0])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][1])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][1])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][3])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][3])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][2])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][2])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][0])).tag() ) c++;
+                if (c>3) return UNKNOWN;
+            }
+        }
+        return BOUNDARY;
+    }
+
+    else  if(a==4)
+    {
+         int info=0 ;
+
+        mmx::point<double> q=equidist( f->site(cl->m_active[0]),f->site(cl->m_active[1]), f->site(cl->m_active[2]),f->site(cl->m_active[3]),info);
+
+        for(unsigned v=0; v<3; v++ ) {
+            for(unsigned s=0; s<2; s++) {
+                unsigned c=0;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][0])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][1])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][1])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][3])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][3])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][2])).tag() ) c++;
+                if (this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][2])).tag() !=
+                        this->vertex(cl->idx(mmx::tmsh_cell<3>::Face[v][s][0])).tag() ) c++;
+                if (c>4 || (q[0]>m1 && q[0]<M1 && q[1]>m2 && q[1]<M2 && q[2]>m3 && q[2]<M3) ) return UNKNOWN;
+            }
+        }
+        return BOUNDARY;
+    }
+
+    if(a>5) return UNKNOWN;
+
 }
 
 
@@ -178,13 +256,13 @@ TMPL
  *
  */
 void CTRL::tag_corner(CELL *cl) {
-  int n, t;
-  for(unsigned i=0; i<8;i++) {
-    n = cl->idx(i);
-    f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
-    this->vertex_tag(n,t);
-    cl->add_active(t);
-  }
+    int n, t;
+    for(unsigned i=0; i<8;i++) {
+        n = cl->idx(i);
+        f->distance2(this->vertex(n)[0], this->vertex(n)[1], this->vertex(n)[2], t);
+        this->vertex_tag(n,t);
+        cl->add_active(t);
+    }
 }
 
 //--------------------------------------------------------------------
