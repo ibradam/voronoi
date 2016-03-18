@@ -14,55 +14,95 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2,
                             const mmx::point<double>& A,
                             const mmx::point<double>& B)
 {
-    mmx::point<double> p;
-    double a,b,t3,t2,x1,x2,y1,y2,z1,z2,xa,xb,ya,yb,za,zb;
+    mmx::point<double> p,p1,p2,p3,p4,q1,q2,q3,q4;
+    double a,b,t3,t2,x1,x2,y1,y2,z1,z2,xa,xb,ya,yb,za,zb,delta;
     x1=H1.m_pt[0]; y1=H1.m_pt[1]; z1=H1.m_pt[2];
     x2=H2.m_pt[0]; y2=H2.m_pt[1]; z2=H2.m_pt[2];
     xa=A[0]; ya=A[1]; za=A[2];
     xb=B[0]; yb=B[1]; zb=B[2];
 
-    double t1 = 0.5*((x1*x1-2*x1*xb - x2*x2 + 2*x2*xb + y1*y1 - 2*y1*yb - y2*y2 + 2*y2*yb + z1*z1 - 2*z1*zb - z2*z2 + 2*z2*zb)/(x1*xa - x1*xb - x2*xa + x2*xb + y1*ya - y1*yb - y2*ya + y2*yb + z1*za - z1*zb - z2*za + z2*zb));
-    double t21 = (x1 * xa - x1 * xb - x2 * xa + x2 * xb + y1 * ya - y1 * yb - y2 * ya + y2 * yb + z2 * za -  z2 * zb - za * zb + zb * zb + sqrt(x1 * x1 * xa * xa - 2 * x1 * x1 * xa * xb + x1 * x1 * xb * xb - x1 * x1 * za * za + 2 * x1 * x1 * za * zb - x1 * x1 * zb * zb - 2 * x1 * x2 * xa * xa + 4 * x1 * x2 * xa * xb - 2 * x1 * x2 * xb * xb + 2 * x1 * xa * y1 * ya - 2 * x1 * xa * y1 * yb - 2 * x1 * xa * y2 * ya + 2 * x1 * xa * y2 * yb + 2 * x1 * xa * z2 * za - 2 * x1 * xa * z2 * zb - 2 * x1 * xa * za * zb + 2 * x1 * xa * zb * zb - 2 * x1 * xb * y1 * ya + 2 * x1 * xb * y1 * yb + 2 * x1 * xb * y2 * ya - 2 * x1 * xb * y2 * yb - 2 * x1 * xb * z2 * za + 2 * x1 * xb * z2 * zb + 2 * x1 * xb * za * za - 2 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2 * x2 * x2 * xa * xb + x2 * x2 * xb * xb + x2 * x2 * za * za - 2 * x2 * x2 * za * zb + x2 * x2 * zb * zb - 2 * x2 * xa * y1 * ya + 2 * x2 * xa * y1 * yb + 2 * x2 * xa * y2 * ya - 2 * x2 * xa * y2 * yb - 2 * x2 * xa * z2 * za + 2 * x2 * xa * z2 * zb + 2 * x2 * xa * za * zb - 2 * x2 * xa * zb * zb + 2 * x2 * xb * y1 * ya - 2 * x2 * xb * y1 * yb - 2 * x2 * xb * y2 * ya + 2 * x2 * xb * y2 * yb + 2 * x2 * xb * z2 * za - 2 * x2 * xb * z2 * zb - 2 * x2 * xb * za * za + 2 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2 * y1 * y1 * ya * yb + y1 * y1 * yb * yb - y1 * y1 * za * za + 2 * y1 * y1 * za * zb - y1 * y1 * zb * zb - 2 * y1 * y2 * ya * ya + 4 * y1 * y2 * ya * yb - 2 * y1 * y2 * yb * yb + 2 * y1 * ya * z2 * za - 2 * y1 * ya * z2 * zb - 2 * y1 * ya * za * zb + 2 * y1 * ya * zb * zb - 2 * y1 * yb * z2 * za + 2 * y1 * yb * z2 * zb + 2 * y1 * yb * za * za - 2 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2 * y2 * y2 * ya * yb + y2 * y2 * yb * yb + y2 * y2 * za * za - 2 * y2 * y2 * za * zb + y2 * y2 * zb * zb - 2 * y2 * ya * z2 * za + 2 * y2 * ya * z2 * zb + 2 * y2 * ya * za * zb - 2 * y2 * ya * zb * zb + 2 * y2 * yb * z2 * za - 2 * y2 * yb * z2 * zb - 2 * y2 * yb * za * za + 2 * y2 * yb * za * zb))/(za*za -  2*za*zb + zb*zb);
-    double t22 = -(- x1 * xa + x1 * xb + x2 * xa - x2 * xb - y1 * ya + y1 * yb+ y2 * ya - y2 * yb - z2 * za + z2 * zb + za * zb - zb * zb + sqrt(x1 * x1 * xa * xa - 2 * x1 * x1 * xa * xb + x1 * x1 * xb * xb - x1 * x1 * za * za + 2 * x1 * x1 * za * zb - x1 * x1 * zb * zb - 2 * x1 * x2 * xa * xa + 4 * x1 * x2 * xa * xb - 2 * x1 * x2 * xb * xb + 2 * x1 * xa * y1 * ya - 2 * x1 * xa * y1 * yb - 2 * x1 * xa * y2 * ya + 2 * x1 * xa * y2 * yb + 2 * x1 * xa * z2 * za - 2 * x1 * xa * z2 * zb - 2 * x1 * xa * za * zb + 2 * x1 * xa * zb * zb - 2 * x1 * xb * y1 * ya + 2 * x1 * xb * y1 * yb + 2 * x1 * xb * y2 * ya - 2 * x1 * xb * y2 * yb - 2 * x1 * xb * z2 * za + 2 * x1 * xb * z2 * zb + 2 * x1 * xb * za * za - 2 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2 * x2 * x2 * xa * xb + x2 * x2 * xb * xb + x2 * x2 * za * za - 2 * x2 * x2 * za * zb + x2 * x2 * zb * zb - 2 * x2 * xa * y1 * ya + 2 * x2 * xa * y1 * yb + 2 * x2 * xa * y2 * ya - 2 * x2 * xa * y2 * yb - 2 * x2 * xa * z2 * za + 2 * x2 * xa * z2 * zb + 2 * x2 * xa * za * zb - 2 * x2 * xa * zb * zb + 2 * x2 * xb * y1 * ya - 2 * x2 * xb * y1 * yb - 2 * x2 * xb * y2 * ya + 2 * x2 * xb * y2 * yb + 2 * x2 * xb * z2 * za - 2 * x2 * xb * z2 * zb - 2 * x2 * xb * za * za + 2 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2 * y1 * y1 * ya * yb + y1 * y1 * yb * yb - y1 * y1 * za * za + 2 * y1 * y1 * za * zb - y1 * y1 * zb * zb - 2 * y1 * y2 * ya * ya + 4 * y1 * y2 * ya * yb - 2 * y1 * y2 * yb * yb + 2 * y1 * ya * z2 * za - 2 * y1 * ya * z2 * zb - 2 * y1 * ya * za * zb + 2 * y1 * ya * zb * zb - 2 * y1 * yb * z2 * za + 2 * y1 * yb * z2 * zb + 2 * y1 * yb * za * za - 2 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2 * y2 * y2 * ya * yb + y2 * y2 * yb * yb + y2 * y2 * za * za - 2 * y2 * y2 * za * zb + y2 * y2 * zb * zb - 2 * y2 * ya * z2 * za + 2 * y2 * ya * z2 * zb + 2 * y2 * ya * za * zb - 2 * y2 * ya * zb * zb + 2 * y2 * yb * z2 * za - 2 * y2 * yb * z2 * zb - 2 * y2 * yb * za * za + 2 * y2 * yb * za * zb))/(za*za - 2*za*zb + zb*zb);
-    double tt21 = (-x1 * xa + x1 * xb + x2 * xa - x2 * xb - y1 * ya + y1 * yb + y2 * ya - y2 * yb + z1 * za - z1 * zb - za * zb + zb * zb + sqrt(x1 * x1 * xa * xa - 2 * x1 * x1 * xa * xb + x1 * x1 * xb * xb + x1 * x1 * za * za - 2 * x1 * x1 * za * zb + x1 * x1 * zb * zb - 2 * x1 * x2 * xa * xa + 4 * x1 * x2 * xa * xb - 2 * x1 * x2 * xb * xb + 2 * x1 * xa * y1 * ya - 2 * x1 * xa * y1 * yb - 2 * x1 * xa * y2 * ya + 2 * x1 * xa * y2 * yb - 2 * x1 * xa * z1 * za + 2 * x1 * xa * z1 * zb + 2 * x1 * xa * za * zb - 2 * x1 * xa * zb * zb - 2 * x1 * xb * y1 * ya + 2 * x1 * xb * y1 * yb + 2 * x1 * xb * y2 * ya - 2 * x1 * xb * y2 * yb + 2 * x1 * xb * z1 * za - 2 * x1 * xb * z1 * zb - 2 * x1 * xb * za * za + 2 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2 * x2 * x2 * xa * xb + x2 * x2 * xb * xb - x2 * x2 * za * za + 2 * x2 * x2 * za * zb - x2 * x2 * zb * zb - 2 * x2 * xa * y1 * ya + 2 * x2 * xa * y1 * yb + 2 * x2 * xa * y2 * ya - 2 * x2 * xa * y2 * yb + 2 * x2 * xa * z1 * za - 2 * x2 * xa * z1 * zb - 2 * x2 * xa * za * zb + 2 * x2 * xa * zb * zb + 2 * x2 * xb * y1 * ya - 2 * x2 * xb * y1 * yb - 2 * x2 * xb * y2 * ya + 2 * x2 * xb * y2 * yb - 2 * x2 * xb * z1 * za + 2 * x2 * xb * z1 * zb + 2 * x2 * xb * za * za - 2 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2 * y1 * y1 * ya * yb + y1 * y1 * yb * yb + y1 * y1 * za * za - 2 * y1 * y1 * za * zb + y1 * y1 * zb * zb - 2 * y1 * y2 * ya * ya + 4 * y1 * y2 * ya * yb - 2 * y1 * y2 * yb * yb - 2 * y1 * ya * z1 * za + 2 * y1 * ya * z1 * zb + 2 * y1 * ya * za * zb - 2 * y1 * ya * zb * zb + 2 * y1 * yb * z1 * za - 2 * y1 * yb * z1 * zb - 2 * y1 * yb * za * za + 2 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2 * y2 * y2 * ya * yb + y2 * y2 * yb * yb - y2 * y2 * za * za + 2 * y2 * y2 * za * zb - y2 * y2 * zb * zb + 2 * y2 * ya * z1 * za - 2 * y2 * ya * z1 * zb - 2 * y2 * ya * za * zb + 2 * y2 * ya * zb * zb - 2 * y2 * yb * z1 * za + 2 * y2 * yb * z1 * zb + 2 * y2 * yb * za * za - 2 * y2 * yb * za * zb))/(za*za - 2*za*zb + zb*zb);
-    double tt22 = -(x1 * xa - x1 * xb - x2 * xa + x2 * xb + y1 * ya - y1 * yb - y2 * ya + y2 * yb - z1 * za + z1 * zb + za * zb - zb * zb + sqrt(x1 * x1 * xa * xa - 2 * x1 * x1 * xa * xb + x1 * x1 * xb * xb + x1 * x1 * za * za - 2 * x1 * x1 * za * zb + x1 * x1 * zb * zb - 2 * x1 * x2 * xa * xa + 4 * x1 * x2 * xa * xb - 2 * x1 * x2 * xb * xb + 2 * x1 * xa * y1 * ya - 2 * x1 * xa * y1 * yb - 2 * x1 * xa * y2 * ya + 2 * x1 * xa * y2 * yb - 2 * x1 * xa * z1 * za + 2 * x1 * xa * z1 * zb + 2 * x1 * xa * za * zb - 2 * x1 * xa * zb * zb - 2 * x1 * xb * y1 * ya + 2 * x1 * xb * y1 * yb + 2 * x1 * xb * y2 * ya - 2 * x1 * xb * y2 * yb + 2 * x1 * xb * z1 * za - 2 * x1 * xb * z1 * zb - 2 * x1 * xb * za * za + 2 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2 * x2 * x2 * xa * xb + x2 * x2 * xb * xb - x2 * x2 * za * za + 2 * x2 * x2 * za * zb - x2 * x2 * zb * zb - 2 * x2 * xa * y1 * ya + 2 * x2 * xa * y1 * yb + 2 * x2 * xa * y2 * ya - 2 * x2 * xa * y2 * yb + 2 * x2 * xa * z1 * za - 2 * x2 * xa * z1 * zb - 2 * x2 * xa * za * zb + 2 * x2 * xa * zb * zb + 2 * x2 * xb * y1 * ya - 2 * x2 * xb * y1 * yb - 2 * x2 * xb * y2 * ya + 2 * x2 * xb * y2 * yb - 2 * x2 * xb * z1 * za + 2 * x2 * xb * z1 * zb + 2 * x2 * xb * za * za - 2 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2 * y1 * y1 * ya * yb + y1 * y1 * yb * yb + y1 * y1 * za * za - 2 * y1 * y1 * za * zb + y1 * y1 * zb * zb - 2 * y1 * y2 * ya * ya + 4 * y1 * y2 * ya * yb - 2 * y1 * y2 * yb * yb - 2 * y1 * ya * z1 * za + 2 * y1 * ya * z1 * zb + 2 * y1 * ya * za * zb - 2 * y1 * ya * zb * zb + 2 * y1 * yb * z1 * za - 2 * y1 * yb * z1 * zb - 2 * y1 * yb * za * za + 2 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2 * y2 * y2 * ya * yb + y2 * y2 * yb * yb - y2 * y2 * za * za + 2 * y2 * y2 * za * zb - y2 * y2 * zb * zb + 2 * y2 * ya * z1 * za - 2 * y2 * ya * z1 * zb - 2 * y2 * ya * za * zb + 2 * y2 * ya * zb * zb - 2 * y2 * yb * z1 * za + 2 * y2 * yb * z1 * zb + 2 * y2 * yb * za * za - 2 * y2 * yb * za * zb))/(za*za - 2*za*zb + zb*zb);
-    double t4 = 0.5*((x1*x1-2*x1*xb - x2*x2 + 2*x2*xb + y1*y1 - 2 *y1*yb - y2*y2 + 2*y2*yb)/(x1*xa - x1*xb - x2*xa + x2*xb + y1*ya - y1*yb - y2*ya + y2*yb));
+    double t1 = 0.5*((x1*x1-2*x1*xb - x2*x2 +2.0*x2*xb + y1*y1 - 2.0*y1*yb - y2*y2 +2.0*y2*yb + z1*z1 - 2.0*z1*zb - z2*z2 +2.0*z2*zb)/(double)(x1*xa - x1*xb - x2*xa + x2*xb + y1*ya - y1*yb - y2*ya + y2*yb + z1*za - z1*zb - z2*za + z2*zb));
+    double t21 = (x1 * xa - x1 * xb - x2 * xa + x2 * xb + y1 * ya - y1 * yb - y2 * ya + y2 * yb + z2 * za -  z2 * zb - za * zb + zb * zb + sqrt(x1 * x1 * xa * xa - 2.0  *x1 * x1 * xa * xb + x1 * x1 * xb * xb - x1 * x1 * za * za +2.0 * x1 * x1 * za * zb - x1 * x1 * zb * zb - 2.0 * x1 * x2 * xa * xa + 4.0 * x1 * x2 * xa * xb - 2.0 * x1 * x2 * xb * xb +2.0 * x1 * xa * y1 * ya - 2.0 * x1 * xa * y1 * yb - 2.0 * x1 * xa * y2 * ya +2.0 * x1 * xa * y2 * yb +2.0 * x1 * xa * z2 * za - 2.0 * x1 * xa * z2 * zb - 2.0 * x1 * xa * za * zb +2.0 * x1 * xa * zb * zb - 2.0 * x1 * xb * y1 * ya +2.0 * x1 * xb * y1 * yb +2.0 * x1 * xb * y2 * ya - 2.0 * x1 * xb * y2 * yb - 2.0 * x1 * xb * z2 * za +2.0 * x1 * xb * z2 * zb +2.0 * x1 * xb * za * za - 2.0 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2.0 * x2 * x2 * xa * xb + x2 * x2 * xb * xb + x2 * x2 * za * za - 2.0 * x2 * x2 * za * zb + x2 * x2 * zb * zb - 2.0 * x2 * xa * y1 * ya +2.0 * x2 * xa * y1 * yb +2.0 * x2 * xa * y2 * ya - 2.0 * x2 * xa * y2 * yb - 2.0 * x2 * xa * z2 * za +2.0 * x2 * xa * z2 * zb +2.0 * x2 * xa * za * zb - 2.0 * x2 * xa * zb * zb +2.0 * x2 * xb * y1 * ya - 2.0 * x2 * xb * y1 * yb - 2.0 * x2 * xb * y2 * ya +2.0 * x2 * xb * y2 * yb +2.0 * x2 * xb * z2 * za - 2.0 * x2 * xb * z2 * zb - 2.0 * x2 * xb * za * za +2.0 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2.0 * y1 * y1 * ya * yb + y1 * y1 * yb * yb - y1 * y1 * za * za +2.0 * y1 * y1 * za * zb - y1 * y1 * zb * zb - 2.0 * y1 * y2 * ya * ya + 4.0 * y1 * y2 * ya * yb - 2.0 * y1 * y2 * yb * yb +2.0 * y1 * ya * z2 * za - 2.0 * y1 * ya * z2 * zb - 2.0 * y1 * ya * za * zb +2.0 * y1 * ya * zb * zb - 2.0 * y1 * yb * z2 * za +2.0 * y1 * yb * z2 * zb +2.0 * y1 * yb * za * za - 2.0 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2.0 * y2 * y2 * ya * yb + y2 * y2 * yb * yb + y2 * y2 * za * za - 2.0 * y2 * y2 * za * zb + y2 * y2 * zb * zb - 2.0 * y2 * ya * z2 * za +2.0 * y2 * ya * z2 * zb +2.0 * y2 * ya * za * zb - 2.0 * y2 * ya * zb * zb +2.0 * y2 * yb * z2 * za - 2.0 * y2 * yb * z2 * zb - 2.0 * y2 * yb * za * za +2.0 * y2 * yb * za * zb))/(double)(za*za -  2.0*za*zb + zb*zb);
+    double t22 = -(- x1 * xa + x1 * xb + x2 * xa - x2 * xb - y1 * ya + y1 * yb+ y2 * ya - y2 * yb - z2 * za + z2 * zb + za * zb - zb * zb + sqrt(x1 * x1 * xa * xa - 2.0 *x1 * x1 * xa * xb + x1 * x1 * xb * xb - x1 * x1 * za * za +2.0 * x1 * x1 * za * zb - x1 * x1 * zb * zb - 2.0 * x1 * x2 * xa * xa + 4.0 * x1 * x2 * xa * xb - 2.0 * x1 * x2 * xb * xb +2.0 * x1 * xa * y1 * ya - 2.0 * x1 * xa * y1 * yb - 2.0 * x1 * xa * y2 * ya +2.0 * x1 * xa * y2 * yb +2.0 * x1 * xa * z2 * za - 2.0 * x1 * xa * z2 * zb - 2.0 * x1 * xa * za * zb +2.0 * x1 * xa * zb * zb - 2.0 * x1 * xb * y1 * ya +2.0 * x1 * xb * y1 * yb +2.0 * x1 * xb * y2 * ya - 2.0 * x1 * xb * y2 * yb - 2.0 * x1 * xb * z2 * za +2.0 * x1 * xb * z2 * zb +2.0 * x1 * xb * za * za - 2.0 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2.0 * x2 * x2 * xa * xb + x2 * x2 * xb * xb + x2 * x2 * za * za - 2.0 * x2 * x2 * za * zb + x2 * x2 * zb * zb - 2.0 * x2 * xa * y1 * ya +2.0 * x2 * xa * y1 * yb +2.0 * x2 * xa * y2 * ya - 2.0 * x2 * xa * y2 * yb - 2.0 * x2 * xa * z2 * za +2.0 * x2 * xa * z2 * zb +2.0 * x2 * xa * za * zb - 2.0 * x2 * xa * zb * zb +2.0 * x2 * xb * y1 * ya - 2.0 * x2 * xb * y1 * yb - 2.0 * x2 * xb * y2 * ya +2.0 * x2 * xb * y2 * yb +2.0 * x2 * xb * z2 * za - 2.0 * x2 * xb * z2 * zb - 2.0 * x2 * xb * za * za +2.0 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2.0 * y1 * y1 * ya * yb + y1 * y1 * yb * yb - y1 * y1 * za * za +2.0 * y1 * y1 * za * zb - y1 * y1 * zb * zb - 2.0 * y1 * y2 * ya * ya + 4.0 * y1 * y2 * ya * yb - 2.0 * y1 * y2 * yb * yb +2.0 * y1 * ya * z2 * za - 2.0 * y1 * ya * z2 * zb - 2.0 * y1 * ya * za * zb +2.0 * y1 * ya * zb * zb - 2.0 * y1 * yb * z2 * za +2.0 * y1 * yb * z2 * zb +2.0 * y1 * yb * za * za - 2.0 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2.0 * y2 * y2 * ya * yb + y2 * y2 * yb * yb + y2 * y2 * za * za - 2.0 * y2 * y2 * za * zb + y2 * y2 * zb * zb - 2.0 * y2 * ya * z2 * za +2.0 * y2 * ya * z2 * zb +2.0 * y2 * ya * za * zb - 2.0 * y2 * ya * zb * zb +2.0 * y2 * yb * z2 * za - 2.0 * y2 * yb * z2 * zb - 2.0 * y2 * yb * za * za +2.0 * y2 * yb * za * zb))/(double)(za*za - 2.0*za*zb + zb*zb);
+    double tt21 = (-x1 * xa + x1 * xb + x2 * xa - x2 * xb - y1 * ya + y1 * yb + y2 * ya - y2 * yb + z1 * za - z1 * zb - za * zb + zb * zb + sqrt(x1 * x1 * xa * xa - 2.0 *x1 * x1 * xa * xb + x1 * x1 * xb * xb + x1 * x1 * za * za - 2.0 * x1 * x1 * za * zb + x1 * x1 * zb * zb - 2.0 * x1 * x2 * xa * xa + 4.0 * x1 * x2 * xa * xb - 2.0 * x1 * x2 * xb * xb +2.0 * x1 * xa * y1 * ya - 2.0 * x1 * xa * y1 * yb - 2.0 * x1 * xa * y2 * ya +2.0 * x1 * xa * y2 * yb - 2.0 * x1 * xa * z1 * za +2.0 * x1 * xa * z1 * zb +2.0 * x1 * xa * za * zb - 2.0 * x1 * xa * zb * zb - 2.0 * x1 * xb * y1 * ya +2.0 * x1 * xb * y1 * yb +2.0 * x1 * xb * y2 * ya - 2.0 * x1 * xb * y2 * yb +2.0 * x1 * xb * z1 * za - 2.0 * x1 * xb * z1 * zb - 2.0 * x1 * xb * za * za +2.0 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2.0 * x2 * x2 * xa * xb + x2 * x2 * xb * xb - x2 * x2 * za * za +2.0 * x2 * x2 * za * zb - x2 * x2 * zb * zb - 2.0 * x2 * xa * y1 * ya +2.0 * x2 * xa * y1 * yb +2.0 * x2 * xa * y2 * ya - 2.0 * x2 * xa * y2 * yb +2.0 * x2 * xa * z1 * za - 2.0 * x2 * xa * z1 * zb - 2.0 * x2 * xa * za * zb +2.0 * x2 * xa * zb * zb +2.0 * x2 * xb * y1 * ya - 2.0 * x2 * xb * y1 * yb - 2.0 * x2 * xb * y2 * ya +2.0 * x2 * xb * y2 * yb - 2.0 * x2 * xb * z1 * za +2.0 * x2 * xb * z1 * zb +2.0 * x2 * xb * za * za - 2.0 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2.0 * y1 * y1 * ya * yb + y1 * y1 * yb * yb + y1 * y1 * za * za - 2.0 * y1 * y1 * za * zb + y1 * y1 * zb * zb - 2.0 * y1 * y2 * ya * ya + 4.0 * y1 * y2 * ya * yb - 2.0 * y1 * y2 * yb * yb - 2.0 * y1 * ya * z1 * za +2.0 * y1 * ya * z1 * zb +2.0 * y1 * ya * za * zb - 2.0 * y1 * ya * zb * zb +2.0 * y1 * yb * z1 * za - 2.0 * y1 * yb * z1 * zb - 2.0 * y1 * yb * za * za +2.0 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2.0 * y2 * y2 * ya * yb + y2 * y2 * yb * yb - y2 * y2 * za * za +2.0 * y2 * y2 * za * zb - y2 * y2 * zb * zb +2.0 * y2 * ya * z1 * za - 2.0 * y2 * ya * z1 * zb - 2.0 * y2 * ya * za * zb +2.0 * y2 * ya * zb * zb - 2.0 * y2 * yb * z1 * za +2.0 * y2 * yb * z1 * zb +2.0 * y2 * yb * za * za - 2.0 * y2 * yb * za * zb))/(double)(za*za - 2.0*za*zb + zb*zb);
+    double tt22 = -(x1 * xa - x1 * xb - x2 * xa + x2 * xb + y1 * ya - y1 * yb - y2 * ya + y2 * yb - z1 * za + z1 * zb + za * zb - zb * zb + sqrt(x1 * x1 * xa * xa - 2.0 *x1 * x1 * xa * xb + x1 * x1 * xb * xb + x1 * x1 * za * za - 2.0 * x1 * x1 * za * zb + x1 * x1 * zb * zb - 2.0 * x1 * x2 * xa * xa + 4.0 * x1 * x2 * xa * xb - 2.0 * x1 * x2 * xb * xb +2.0 * x1 * xa * y1 * ya - 2.0 * x1 * xa * y1 * yb - 2.0 * x1 * xa * y2 * ya +2.0 * x1 * xa * y2 * yb - 2.0 * x1 * xa * z1 * za +2.0 * x1 * xa * z1 * zb +2.0 * x1 * xa * za * zb - 2.0 * x1 * xa * zb * zb - 2.0 * x1 * xb * y1 * ya +2.0 * x1 * xb * y1 * yb +2.0 * x1 * xb * y2 * ya - 2.0 * x1 * xb * y2 * yb +2.0 * x1 * xb * z1 * za - 2.0 * x1 * xb * z1 * zb - 2.0 * x1 * xb * za * za +2.0 * x1 * xb * za * zb + x2 * x2 * xa * xa - 2.0 * x2 * x2 * xa * xb + x2 * x2 * xb * xb - x2 * x2 * za * za +2.0 * x2 * x2 * za * zb - x2 * x2 * zb * zb - 2.0 * x2 * xa * y1 * ya +2.0 * x2 * xa * y1 * yb +2.0 * x2 * xa * y2 * ya - 2.0 * x2 * xa * y2 * yb +2.0 * x2 * xa * z1 * za - 2.0 * x2 * xa * z1 * zb - 2.0 * x2 * xa * za * zb +2.0 * x2 * xa * zb * zb +2.0 * x2 * xb * y1 * ya - 2.0 * x2 * xb * y1 * yb - 2.0 * x2 * xb * y2 * ya +2.0 * x2 * xb * y2 * yb - 2.0 * x2 * xb * z1 * za +2.0 * x2 * xb * z1 * zb +2.0 * x2 * xb * za * za - 2.0 * x2 * xb * za * zb + y1 * y1 * ya * ya - 2.0 * y1 * y1 * ya * yb + y1 * y1 * yb * yb + y1 * y1 * za * za - 2.0 * y1 * y1 * za * zb + y1 * y1 * zb * zb - 2.0 * y1 * y2 * ya * ya + 4.0 * y1 * y2 * ya * yb - 2.0 * y1 * y2 * yb * yb - 2.0 * y1 * ya * z1 * za +2.0 * y1 * ya * z1 * zb +2.0 * y1 * ya * za * zb - 2.0 * y1 * ya * zb * zb +2.0 * y1 * yb * z1 * za - 2.0 * y1 * yb * z1 * zb - 2.0 * y1 * yb * za * za +2.0 * y1 * yb * za * zb + y2 * y2 * ya * ya - 2.0 * y2 * y2 * ya * yb + y2 * y2 * yb * yb - y2 * y2 * za * za +2.0 * y2 * y2 * za * zb - y2 * y2 * zb * zb +2.0 * y2 * ya * z1 * za - 2.0 * y2 * ya * z1 * zb - 2.0 * y2 * ya * za * zb +2.0 * y2 * ya * zb * zb - 2.0 * y2 * yb * z1 * za +2.0 * y2 * yb * z1 * zb +2.0 * y2 * yb * za * za - 2.0 * y2 * yb * za * zb))/(double)(za*za - 2.0*za*zb + zb*zb);
+    double t4 = 0.5*((x1*x1-2*x1*xb - x2*x2 +2.0*x2*xb + y1*y1 - 2.0 *y1*yb - y2*y2 +2.0*y2*yb)/(double)(x1*xa - x1*xb - x2*xa + x2*xb + y1*ya - y1*yb - y2*ya + y2*yb));
+    double delta1= -(2.0*y1*y1)*ya*yb-(2.0*y2*y2)*za*zb-(2.0*x2*x2)*za*zb+(2.0*y1*y1)*za*zb-2.0*y1*yb*z2*za-2.0*x1*x2*xa*xa-2.0*x1*xb*y1*ya+2.0*x1*xb*y1*yb+2.0*x1*xb*y2*ya-2.0*x1*xb*y2*yb-2.0*y1*ya*z2*zb-2.0*x1*xa*z2*zb-2.0*x2*xa*z2*za+2.0*x2*xa*z2*zb+(x2*x2)*za*za+2.0*x2*xb*z2*za-2.0*x2*xb*z2*zb+2.0*y1*ya*zb*zb-2.0*x1*xb*z2*za-2.0*x1*xa*za*zb-2.0*x2*xa*y2*yb+2.0*x2*xa*y1*yb-2.0*x1*xb*za*zb+2.0*x2*xa*y2*ya-2.0*x2*xa*y1*ya+2.0*x1*xb*z2*zb+(y2*y2)*yb*yb-(y1*y1)*za*za-(x1*x1)*zb*zb-2.0*x2*xa*zb*zb-(y1*y1)*zb*zb-(2.0*x1*x1)*xa*xb+(2.0*x1*x1)*za*zb+4.0*y1*y2*ya*yb+2.0*y2*ya*za*zb+2.0*y2*yb*za*zb+(x2*x2)*xb*xb+2.0*y1*yb*za*za+2.0*x2*xb*y1*ya+2.0*x2*xa*za*zb-2.0*x2*xb*y1*yb-2.0*y2*ya*zb*zb-2.0*y1*y2*yb*yb+(y1*y1)*yb*yb+(y2*y2)*ya*ya-2.0*y1*yb*za*zb+2.0*x1*xa*zb*zb-(2.0*y2*y2)*ya*yb+(x2*x2)*xa*xa-(2.0*x2*x2)*xa*xb+2.0*x1*xb*za*za+(x1*x1)*xb*xb+2.0*x1*xa*z2*za+4.0*x1*x2*xa*xb+2.0*x1*xa*y1*ya-2.0*x1*xa*y1*yb-2.0*x1*xa*y2*ya+2.0*x1*xa*y2*yb-2.0*x1*x2*xb*xb+(y1*y1)*ya*ya-2.0*y1*ya*za*zb-2.0*y1*y2*ya*ya-(x1*x1)*za*za+(x1*x1)*xa*xa+2.0*x2*xb*za*zb+(x2*x2)*zb*zb+2.0*x2*xb*y2*yb+2.0*y1*ya*z2*za+(y2*y2)*zb*zb-2.0*y2*yb*za*za-2.0*x2*xb*y2*ya+2.0*y1*yb*z2*zb-2.0*y2*yb*z2*zb+2.0*y2*yb*z2*za+2.0*y2*ya*z2*zb+(y2*y2)*za*za-2.0*y2*ya*z2*za-2.0*x2*xb*za*za;
+    double delta2= -(2.0*y2*y2)*ya*yb-(2.0*x1*x1)*xa*xb-(2.0*x1*x1)*za*zb-(2.0*x2*x2)*xa*xb+2.0*x1*xb*z1*za+(2.0*x2*x2)*za*zb+2.0*x2*xb*za*za-(x2*x2)*zb*zb-2.0*y1*y2*ya*ya-(y2*y2)*za*za+(x1*x1)*xb*xb+2.0*x1*xb*y2*ya-2.0*x1*xb*y2*yb-2.0*x1*xb*y1*ya+2.0*x1*xb*y1*yb-(x2*x2)*za*za-2.0*y1*yb*za*za+(y2*y2)*yb*yb+2.0*x1*xa*za*zb-2.0*x2*xa*y1*ya-2.0*x1*xa*z1*za+2.0*x1*xa*z1*zb+2.0*x1*xb*za*zb-2.0*x1*xb*z1*zb+2.0*x2*xa*zb*zb+2.0*y2*ya*z1*za-2.0*y2*ya*z1*zb+2.0*y2*yb*z1*zb-2.0*y2*ya*za*zb-2.0*y2*yb*z1*za+(x1*x1)*xa*xa-2.0*y2*yb*za*zb-2.0*y1*ya*zb*zb-2.0*x1*xa*zb*zb-2.0*x1*x2*xb*xb+(2.0*y2*y2)*za*zb-(y2*y2)*zb*zb+(y1*y1)*za*za-2.0*x1*x2*xa*xa+(x1*x1)*zb*zb+(x2*x2)*xb*xb-2.0*x2*xa*za*zb-2.0*x2*xa*y2*yb-2.0*x2*xa*z1*zb+2.0*x2*xb*y2*yb+2.0*y1*ya*z1*zb+2.0*y2*ya*zb*zb+(y1*y1)*yb*yb-2.0*x2*xb*y2*ya-2.0*y1*ya*z1*za+2.0*y1*yb*za*zb+2.0*x2*xa*y1*yb+2.0*x2*xa*y2*ya+2.0*x2*xa*z1*za+(y1*y1)*zb*zb-(2.0*y1*y1)*ya*yb-(2.0*y1*y1)*za*zb-2.0*x1*xb*za*za+2.0*y2*yb*za*za+4.0*y1*y2*ya*yb+(x1*x1)*za*za-2.0*y1*yb*z1*zb+2.0*y1*yb*z1*za+2.0*y1*ya*za*zb+4.0*x1*x2*xa*xb+2.0*x1*xa*y1*ya-2.0*x1*xa*y1*yb-2.0*x1*xa*y2*ya+2.0*x1*xa*y2*yb-2.0*x2*xb*y1*yb-2.0*x2*xb*za*zb+2.0*x2*xb*y1*ya+2.0*x2*xb*z1*zb-2.0*y1*y2*yb*yb-2.0*x2*xb*z1*za+(y2*y2)*ya*ya+(x2*x2)*xa*xa+(y1*y1)*ya*ya;
     using std::min;
     using std::max;
 
     if ((H1.distance2(A)-H2.distance2(A))*(H1.distance2(B)-H2.distance2(B))<=0)
 
     {
-        if (H1.m_pt[2] < H2.m_pt[2]) {
+        if (H1.m_pt[2] < H2.m_pt[2]  )
+        {
             a = H1.m_pt[2]; b= H2.m_pt[2];
-            t2=t21; t3=t22;
-        } else {
-            b = H1.m_pt[2]; a = H2.m_pt[2];
-            t2=tt21; t3=tt22;
-        }
-        //std::cout<<" "<<t1<<" "<<t2<<" "<<t3<< " "<<t4<<std::endl;
 
-        p = t1*A+(1-t1)*B;
-        if (t1>=0 && t1 <= 1 && p[2]<=a && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
-            return p;
-        else {
-            p = t2*A+(1-t2)*B;
-            if (t2>=0 && t2 <= 1 && p[2]>= a && p[2]<=b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
+            p = t1*A+(1-t1)*B;
+            if (t1>=0 && t1 <= 1 && p[2]<=a && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
                 return p;
-            else {
+           else if (delta1>=0)
+            {
+                t2=t21;
+                p = t2*A+(1-t2)*B;
+                if (t2>=0 && t2 <= 1 && p[2]>= a && p[2]<=b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
+                    return p;
+                t3=t22;
                 p = t3*A+(1-t3)*B;
                 if (t3>=0 && t3 <= 1 && p[2]>= a && p[2]<=b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
                     return p;
-                else {
-                    p = t4*A+(1-t4)*B;
-                    if (t4>=0 && t4 <= 1 && p[2]>= b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
-                        return p;
+
+
+            else{
+            p = t4*A+(1-t4)*B;
+            if (t4>=0 && t4 <= 1 && p[2]>= b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
+                return p;
                 }
             }
+          //  std::cout<<" "<<p<<" ,"<<t1<<" ,"<<t2<< ", "<<t3<< " ," <<delta1<< "," <<delta2<< "," <<t1<< std::endl;
+
         }
 
 
+        else {
+            b = H1.m_pt[2]; a = H2.m_pt[2];
+
+
+
+
+            // std::cout<<" "<<p1<<" ,"<<p2<<" ,"<<p3<< ", "<<p4<<std::endl;
+
+            p = t1*A+(1-t1)*B;
+            if (t1>=0 && t1 <= 1 && p[2]<=a && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
+                return p;
+            else if (delta2>=0)
+            {
+                t2=tt21;
+                p = t2*A+(1-t2)*B;
+                if (t2>=0 && t2 <= 1 && p[2]>= a && p[2]<=b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
+                    return p;
+                t3=tt22;
+                p = t3*A+(1-t3)*B;
+                if (t3>=0 && t3 <= 1 && p[2]>= a && p[2]<=b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
+                    return p;
+
+
+
+            else { p = t4*A+(1-t4)*B;
+                if (t4>=0 && t4 <= 1 && p[2]>= b && p[0] >= min(xa,xb) && p[0]<=max(xa,xb) && p[1] >= min(ya,yb) && p[1]<=max(ya,yb))
+                    return p;
+            }
+            }
+        }
+
+       // std::cout<<" "<<t3*A+(1-t3)*B<<" ," <<t1<< "," <<t2<< "," <<t3<< "," <<t4<< std::endl;
+
     }
+
+    //std::cout<<" "<<t3<<" ,"<<delta2<<" ,"<<t2<< ", "<<t4<<std::endl;
+
+
     else
         std::cout<<"La mediatrice de " << H1 << "et de " << H2 << " ne coupe pas le segment" "[ " << A << "," << B <<"]" << std::endl;
 
@@ -76,7 +116,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2,
  * \param A
  * \param B
  * \param info: output variable  (0 OK, 1 outside face, 2 segment in face)
- * \return the point on the trisectrice of H1, H2 and H3 and on the face [A,B]
+ * \return the point on the trisectrice of H1, H2 and H3 on the face [A,B]
  */
 mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
                             const mmx::point<double>& A, const mmx::point<double>& B,
@@ -171,7 +211,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
             z0=(0.5)*(-b2 - sqrt(delta))/a2;
             q=mmx::point<double>(xa,d2*z0*z0+e2*z0+f2,z0);
             if (min(ya,yb)<=q[1] && q[1]<=max(ya,yb)
-                  && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z1<=z0 && z0<=z2)
+                    && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z1<=z0 && z0<=z2)
                 return q;
             mdebug()<<"delta 1.1";
             z0=(0.5)*(-b2+sqrt(delta))/a2;
@@ -194,7 +234,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,
             z0=(0.5)*(-b3+sqrt(delta))/a3;
             q=mmx::point<double>(xa,d3*z0*z0+e3*z0+f3,z0);
             if (min(ya,yb)<=q[1] && q[1]<=max(ya,yb)
-                     && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z2<=z0 && z0<=z3)
+                    && min(za,zb)<=q[2] && q[2]<=max(za,zb) && z2<=z0 && z0<=z3)
                 return q;
         }
 
@@ -577,17 +617,17 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
     double  a4=(0.5)* (x1 * x1 * y2 - x1 * x1 * y3 - x2 * x2 * y1 + x2 * x2 * y3 + x3 * x3 * y1 - x3 * x3 * y2 + y1 * y1 * y2 - y1 * y1 * y3 - y1 * y2 * y2 + y1 * y3 * y3 + y2 * y2 * y3 - y2 * y3 * y3) / (x1 * y2 - x1 * y3 - x2 * y1 + x2 * y3 + x3 * y1 - x3 * y2);
     double  b4=(-0.5)* (x1 * x1 * x2 - x1 * x1 * x3 - x1 * x2 * x2 + x1 * x3 * x3 - x1 * y2 * y2 + x1 * y3 * y3 + x2 * x2 * x3 - x2 * x3 * x3 + x2 * y1 * y1 - x2 * y3 * y3 - x3 * y1 * y1 + x3 * y2 * y2) / (x1 * y2 - x1 * y3 - x2 * y1 + x2 * y3 + x3 * y1 - x3 * y2);
     double  z0,t0,t11,t12,t21,t22,t31,t32;
-    A1=-2 * a2 * x2 + 2 * a2 * x4 - 2 * d2 * y2 + 2 * d2 * y4;
-    B1=-2 * b2 * x2 + 2 * b2 * x4 - 2 * e2 * y2 + 2 * e2 * y4 - 2 * z2 + 2 * z4;
-    C1=-2 * c2 * x2 + 2 * c2 * x4 - 2 * f2 * y2 + 2 * f2 * y4 + x2 * x2 - x4 * x4 + y2 * y2 - y4 * y4 + z2 * z2 - z4 * z4;
+    A1=-2 * a2 * x2 +2.0 * a2 * x4 - 2.0 * d2 * y2 +2.0 * d2 * y4;
+    B1=-2 * b2 * x2 +2.0 * b2 * x4 - 2.0 * e2 * y2 +2.0 * e2 * y4 - 2.0 * z2 +2.0 * z4;
+    C1=-2 * c2 * x2 +2.0 * c2 * x4 - 2.0 * f2 * y2 +2.0 * f2 * y4 + x2 * x2 - x4 * x4 + y2 * y2 - y4 * y4 + z2 * z2 - z4 * z4;
     D1= B1*B1-4*A1*C1;
-    A2=-2 * a3 * x2 + 2 * a3 * x4 - 2 * d3 * y2 + 2 * d3 * y4 - 1;
-    B2=-2 * b3 * x2 + 2 * b3 * x4 - 2 * e3 * y2 + 2 * e3 * y4 + 2 * z4;
-    C2=-2 * c3 * x2 + 2 * c3 * x4 - 2 * f3 * y2 + 2 * f3 * y4 + x2 * x2 - x4 * x4 + y2 * y2 - y4 * y4 - z4 * z4;
+    A2=-2 * a3 * x2 +2.0 * a3 * x4 - 2.0 * d3 * y2 +2.0 * d3 * y4 - 1;
+    B2=-2 * b3 * x2 +2.0 * b3 * x4 - 2.0 * e3 * y2 +2.0 * e3 * y4 +2.0 * z4;
+    C2=-2 * c3 * x2 +2.0 * c3 * x4 - 2.0 * f3 * y2 +2.0 * f3 * y4 + x2 * x2 - x4 * x4 + y2 * y2 - y4 * y4 - z4 * z4;
     D2= B2*B2-4*A2*C2;
     A3=-1;
     B3=2*z4;
-    C3=-2 * a4 * x2 + 2 * a4 * x4 - 2 * b4 * y2 + 2 * b4 * y4 + x2 * x2 - x4 * x4 + y2 * y2 - y4 * y4 - z4 * z4;
+    C3=-2 * a4 * x2 +2.0 * a4 * x4 - 2.0 * b4 * y2 +2.0 * b4 * y4 + x2 * x2 - x4 * x4 + y2 * y2 - y4 * y4 - z4 * z4;
     D3= B3*B3-4*A3*C3;
 
 
@@ -598,7 +638,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
     //using std::min;
     //using std::max;
 
-    t0= -(0.5)*((2 * b1 * x2 - 2 * b1 * x4 + 2 * d1 * y2 - 2 * d1 * y4 - x2 * x2 + x4 * x4 - y2 * y2 + y4 * y4 - z2 * z2 + z4 * z4) / (a1 * x2 - a1 * x4 + c1 * y2 - c1 * y4 + z2 - z4));
+    t0= -(0.5)*((2 * b1 * x2 - 2.0 * b1 * x4 +2.0 * d1 * y2 - 2.0 * d1 * y4 - x2 * x2 + x4 * x4 - y2 * y2 + y4 * y4 - z2 * z2 + z4 * z4) / (a1 * x2 - a1 * x4 + c1 * y2 - c1 * y4 + z2 - z4));
     q=mmx::point<double>(a1*t0+b1, c1*t0+d1, t0);
     if (t0<= z1) {
 
@@ -648,7 +688,7 @@ mmx::point<double> equidist(const hline& H1 , const hline& H2, const hline& H3,c
         info = 1;
         std::cout<< " Il n' ya pas de point quadrisecteur pour  " << H1 << ", " << H2 <<  ","   << H3 <<  "et " << H4 << std::endl;
         return mmx::point<double>(0,0,0);
-     }
+    }
 }
 
 
